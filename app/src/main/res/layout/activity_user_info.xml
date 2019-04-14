@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_height="270dp"
+        android:layout_width="match_parent"
+        >
+        <!--match_parent 匹配父控件  wrap_content 包含内容-->
+
+        <!--左侧头像布局-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            >
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="#c4c4c9"
+                android:layout_marginBottom="20dp"/>
+
+            <Button
+                android:id="@+id/btn_fixPic"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@drawable/btn_radius"
+                android:text="修改头像">
+            </Button>
+
+        </LinearLayout>
+
+        <!--右侧信息陈列布局-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:padding="12dp"
+            ><!--layout_weight:把剩余内容按照比重评分开-->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="huihui"
+                android:background="@drawable/border"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="12345678911"
+                android:background="@drawable/border"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="西安邮电大学"
+                android:background="@drawable/border"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:gravity="center"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="女"
+                android:background="@drawable/border"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="300dp"
+        >
+        <Button
+            android:id="@+id/btn_publish"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_radius"
+            android:text="我的发布">
+        </Button>
+
+        <Button
+            android:id="@+id/btn_fixUserInfo"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_radius"
+            android:layout_marginTop="10dp"
+            android:text="修改个人信息">
+        </Button>
+
+        <Button
+            android:id="@+id/btn_fixPwd"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_radius"
+            android:text="修改密码">
+        </Button>
+
+        <Button
+            android:id="@+id/btn_loginOut"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_loginout"
+            android:textColor="#fff"
+            android:layout_marginTop="20dp"
+            android:text="退出账户">
+        </Button>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
