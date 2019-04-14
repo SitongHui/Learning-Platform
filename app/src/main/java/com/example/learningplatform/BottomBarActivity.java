@@ -42,7 +42,7 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
 
         fragmentManager = getFragmentManager();
         this.setDefaultFrag();
-//        bindView();
+        bindView();
 
 
         // 图片大小设置
@@ -73,6 +73,8 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
         tabUser = findViewById(R.id.txt_user);
         ly_content = findViewById(R.id.fragment_container);
 
+        tabHome.setSelected(true);
+
         tabHome.setOnClickListener((View.OnClickListener) this);
         tabUser.setOnClickListener((View.OnClickListener) this);
         tabAdd.setOnClickListener((View.OnClickListener) this);
@@ -86,73 +88,49 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
         tabUser.setSelected(false);
     }
 
-    //隐藏所有Fragment
-    public void hideAllFragment(FragmentTransaction transaction){
-        if(f1!=null){
-            transaction.hide(f1);
-        }
-        if(f2!=null){
-            transaction.hide(f2);
-        }
-        if(f3!=null){
-            transaction.hide(f3);
-        }
-    }
 
     private void setDefaultFrag(){
 
-        this.f2 = new AddFragment();
         this.f1 = new HomeFragment();
-        this.f3 = new UserFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("name", "aaa");
+        f1.setArguments(bundle);
 
+        this.f2 = new AddFragment();
+        Bundle bundle2= new Bundle();
+        bundle2.putString("name", "bbb");
+        f2.setArguments(bundle2);
+
+        this.f3 = new UserFragment();
+        Bundle bundle3 = new Bundle();
+        bundle3.putString("name", "ccc");
+        f3.setArguments(bundle3);
+
+        // 设置默认页面
         fragmentManager.beginTransaction().add(R.id.fragment_container, f1).commit();
     }
 
     @Override
     public void onClick(View v) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        hideAllFragment(transaction);
         switch(v.getId()){
             case R.id.txt_home:
                 selected();
                 tabHome.setSelected(true);
-                if(f1 == null){
-//                    f1 = new HomeFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", "aaa");
-                    f1.setArguments(bundle);
-                    transaction.replace(R.id.fragment_container,f1);
-                }else{
-                    transaction.show(f1);
-                }
+                transaction.replace(R.id.fragment_container,f1);
                 break;
 
             case R.id.txt_add:
                 selected();
                 tabAdd.setSelected(true);
-                if(f2 == null){
-//                    f2 = new AddFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", "bbb");
-                    f2.setArguments(bundle);
-                    transaction.replace(R.id.fragment_container,f2);
-                }else{
-                    transaction.show(f2);
-                }
+                transaction.replace(R.id.fragment_container,f2);
+
                 break;
 
             case R.id.txt_user:
                 selected();
                 tabUser.setSelected(true);
-                if(f3 == null){
-//                    f3 = new UserFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", "ccc");
-                    f3.setArguments(bundle);
-                    transaction.replace(R.id.fragment_container,f3);
-                }else{
-                    transaction.show(f3);
-                }
+                transaction.replace(R.id.fragment_container,f3);
                 break;
         }
 
