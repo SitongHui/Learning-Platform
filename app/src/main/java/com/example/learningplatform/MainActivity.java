@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 跳转到个人页面
-                Intent intent = new Intent(MainActivity.this, UserInfoActivity.class); // todo
+                Intent intent = new Intent(MainActivity.this, BottomBarActivity.class); // todo
                 startActivity(intent);
             }
         });

@@ -21,7 +21,6 @@
         <activity android:name=".FixUserInfoActivity" />
         <activity android:name=".BottomBarActivity" />
         <activity android:name=".FixPwdActivity" />
-        <activity android:name=".UserInfoActivity"></activity>
     </application>
 
 </manifest>

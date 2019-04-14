@@ -11,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.learningplatform.fragment.UserFragment;
+
 public class FixUserInfoActivity extends AppCompatActivity {
 
     private EditText telIcon;
@@ -51,9 +53,12 @@ public class FixUserInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 跳转到个人信息页面
-                Intent intent = new Intent(FixUserInfoActivity.this, UserInfoActivity.class);
-                Toast.makeText(FixUserInfoActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FixUserInfoActivity.this, BottomBarActivity.class);
+                intent.putExtra("id", 1);
                 startActivity(intent);
+                Toast.makeText(FixUserInfoActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+                finish();
+//                startActivity(intent);
             }
         });
 

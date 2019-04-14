@@ -1,7 +1,7 @@
 package com.example.learningplatform;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +40,7 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
 //        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_bottom_bar);
 
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         this.setDefaultFrag();
         bindView();
 
@@ -50,30 +50,40 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
         addIcon = findViewById(R.id.txt_add);
         userIcon = findViewById(R.id.txt_user);
 
-        Drawable drawableHome=getResources().getDrawable(R.drawable.icon_home);
+        Drawable drawableHome=getResources().getDrawable(R.drawable.tab_menu_home);
         drawableHome.setBounds(0,0,80,80);//第一0是距左边距离，第二0是距上边距离，50、50分别是长宽
         homeIcon.setCompoundDrawables(null,drawableHome,null,null); // 图片出现的位置
 
-        Drawable drawableAdd=getResources().getDrawable(R.drawable.icon_add);
+        Drawable drawableAdd=getResources().getDrawable(R.drawable.tab_menu_add);
         drawableAdd.setBounds(0,0,70,70);//第一0是距左边距离，第二0是距上边距离，50、50分别是长宽
         addIcon.setCompoundDrawables(null,drawableAdd,null,null);
 
-        Drawable drawableUser=getResources().getDrawable(R.drawable.icon_user);
+        Drawable drawableUser=getResources().getDrawable(R.drawable.tab_menu_user);
         drawableUser.setBounds(0,0,70,70);//第一0是距左边距离，第二0是距上边距离，50、50分别是长宽
         userIcon.setCompoundDrawables(null,drawableUser,null,null);
+
+        int id = getIntent().getIntExtra("id", 0);
+        if (id == 1) {
+            tabUser.setSelected(true);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new UserFragment())
+                    .addToBackStack(null).commit();
+
+        }
     }
 
 
 
     //UI组件初始化与事件绑定
     private void bindView() {
-        topBar = findViewById(R.id.txt_top);
+//        topBar = findViewById(R.id.txt_top);
         tabHome = findViewById(R.id.txt_home);
         tabAdd = findViewById(R.id.txt_add);
         tabUser = findViewById(R.id.txt_user);
         ly_content = findViewById(R.id.fragment_container);
 
-        tabHome.setSelected(true);
+//        tabHome.setSelected(true);
 
         tabHome.setOnClickListener((View.OnClickListener) this);
         tabUser.setOnClickListener((View.OnClickListener) this);
