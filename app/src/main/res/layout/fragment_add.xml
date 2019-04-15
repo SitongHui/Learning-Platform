@@ -2,16 +2,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent">
+    android:padding="15dp">
 
+    <ImageView
+        android:id="@+id/goods_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#ee8080"
+        android:layout_gravity="center" />
 
-    <TextView
-        android:id="@+id/txt_content"
+    <EditText
+        android:id="@+id/goods_name"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="呵呵"
-        android:textColor="@color/text_blue"
-        android:textSize="20sp"/>
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:paddingLeft="5dp"
+        android:hint="请输入物品名称"/>
+
+    <EditText
+        android:id="@+id/goods_price"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:paddingLeft="5dp"
+        android:hint="请输入物品价格"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/goods_tel"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:paddingLeft="5dp"
+        android:hint="请输入联系方式"/>
+
+    <EditText
+        android:id="@+id/goods_"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:paddingLeft="5dp"
+        android:gravity="left"
+        android:hint="请输入物品描述"/>
+    <!--此处的gravity是让hint中的文字放在EditView框的左上方-->
+
+    <Button
+        android:id="@+id/btn_new_publish"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/btn_radius"
+        android:layout_marginTop="20dp"
+        android:text="发布"/>
+
 
 </LinearLayout>
