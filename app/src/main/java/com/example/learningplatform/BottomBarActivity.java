@@ -64,7 +64,7 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
 
         int id = getIntent().getIntExtra("id", 0);
         if (id == 1) {
-            tabUser.setSelected(true);
+            tabUser.setSelected(true); // 从修改个人信息返回到个人信息页面时对应的底部导航栏亮起
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, new UserFragment())
@@ -83,7 +83,7 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
         tabUser = findViewById(R.id.txt_user);
         ly_content = findViewById(R.id.fragment_container);
 
-//        tabHome.setSelected(true);
+        tabHome.setSelected(true);
 
         tabHome.setOnClickListener((View.OnClickListener) this);
         tabUser.setOnClickListener((View.OnClickListener) this);
