@@ -1,22 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="15dp"
     android:background="#fff">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/example"
-        android:scaleType="fitXY"/>
+        android:scaleType="centerCrop"/>
 
-    <TextView
-        android:id="@+id/example"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textColor="#000"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="名称:"
+                android:textColor="#323131"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/show_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp"
+                android:text="11121111111"
+                android:textColor="#2f2c2c"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="价格:"
+                android:textColor="#323131"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/show_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp"
+                android:text="111"
+                android:textColor="#2f2c2c"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="描述:"
+                android:textColor="#323131"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/show_des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp"
+                android:text="111"
+                android:textColor="#2f2c2c"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
 
 </LinearLayout>

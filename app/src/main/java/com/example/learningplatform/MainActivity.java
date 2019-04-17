@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
 
     // 登录按钮
     private Button loginBtn;
+    // 注册按钮
+    private Button registerBtn;
     // 登录框
     private EditText loginPic;
     // 密码框
@@ -30,7 +32,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 跳转到个人页面
-                Intent intent = new Intent(MainActivity.this, BottomBarActivity.class); // todo
+                Intent intent = new Intent(MainActivity.this, BottomBarActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 注册按钮
+        registerBtn = findViewById(R.id.btn_register);
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 跳转到个人页面
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
