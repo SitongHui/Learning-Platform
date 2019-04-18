@@ -69,7 +69,12 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
                     .beginTransaction()
                     .replace(R.id.fragment_container, new UserFragment())
                     .addToBackStack(null).commit();
-
+        } else if (id == 2) { // 从修改密码页面返回到个人信息页面
+            tabUser.setSelected(true);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new UserFragment())
+                    .addToBackStack(null).commit();
         }
     }
 

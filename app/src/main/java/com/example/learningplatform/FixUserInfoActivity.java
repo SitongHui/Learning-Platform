@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,8 @@ public class FixUserInfoActivity extends AppCompatActivity {
     private EditText schoolIcon;
     private RadioGroup myRadioGrop;
     private Button confirmBtn;
+
+    private String tel, school;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +52,43 @@ public class FixUserInfoActivity extends AppCompatActivity {
         // 确定修改按钮
         confirmBtn = findViewById(R.id.confirm_btn);
 
+        init();
+    }
+
+    private void init() {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 跳转到个人信息页面
-                Intent intent = new Intent(FixUserInfoActivity.this, BottomBarActivity.class);
-                intent.putExtra("id", 1);
-                startActivity(intent);
-                Toast.makeText(FixUserInfoActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                finish();
-//                startActivity(intent);
+                String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
+
+                getEditString();
+                if (TextUtils.isEmpty(tel)) {
+                    Toast.makeText(FixUserInfoActivity.this, "请输入电话号码", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }else if (TextUtils.isEmpty(school)) {
+                    Toast.makeText(FixUserInfoActivity.this, "请输入学校名称", Toast.LENGTH_SHORT).show();
+                    return;
+
+                } else if (!tel.matches(telRegex)) {
+                    Toast.makeText(FixUserInfoActivity.this, "电话号码格式错误，请重新输入", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }  else {
+                    // 跳转到个人信息页面
+                    Intent intent = new Intent(FixUserInfoActivity.this, BottomBarActivity.class);
+                    intent.putExtra("id", 1);
+                    startActivity(intent);
+                    Toast.makeText(FixUserInfoActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
+    }
 
+    private void getEditString() {
+        tel = telIcon.getText().toString().trim();
+        school = schoolIcon.getText().toString().trim();
     }
 
 }

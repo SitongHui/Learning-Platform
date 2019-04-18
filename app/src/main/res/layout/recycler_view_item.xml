@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="名称:"
-                android:textColor="#323131"
+                android:textColor="#6e6b6b"
                 android:textSize="20sp"/>
             <TextView
                 android:id="@+id/show_name"
@@ -38,7 +38,7 @@
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
                 android:text="11121111111"
-                android:textColor="#2f2c2c"/>
+                android:textColor="#6e6b6b"/>
 
         </LinearLayout>
 
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="价格:"
-                android:textColor="#323131"
+                android:textColor="#6e6b6b"
                 android:textSize="20sp"/>
             <TextView
                 android:id="@+id/show_price"
@@ -63,7 +63,7 @@
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
                 android:text="111"
-                android:textColor="#2f2c2c"/>
+                android:textColor="#6e6b6b"/>
 
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="描述:"
-                android:textColor="#323131"
+                android:textColor="#6e6b6b"
                 android:textSize="20sp"/>
             <TextView
                 android:id="@+id/show_des"
@@ -88,7 +88,7 @@
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
                 android:text="111"
-                android:textColor="#2f2c2c"/>
+                android:textColor="#6e6b6b"/>
 
         </LinearLayout>
 
