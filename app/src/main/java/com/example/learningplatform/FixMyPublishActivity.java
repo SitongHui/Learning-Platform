@@ -67,7 +67,7 @@ public class FixMyPublishActivity extends AppCompatActivity {
                 } else {
                     // 发布成功，跳转到主页
                     Intent intent = new Intent(FixMyPublishActivity.this, BottomBarActivity.class);
-                    Toast.makeText(FixMyPublishActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FixMyPublishActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 }
             }

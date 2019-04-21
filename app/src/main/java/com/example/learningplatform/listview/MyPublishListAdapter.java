@@ -1,7 +1,9 @@
 package com.example.learningplatform.listview;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,8 +59,8 @@ public class MyPublishListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.imageView = convertView.findViewById(R.id.iv);
             holder.tvTitle = convertView.findViewById(R.id.tv_title);
-//            holder.btnFix = convertView.findViewById(R.id.btn_fix);
-//            holder.btnDel = convertView.findViewById(R.id.btn_del);
+            holder.btnFix = convertView.findViewById(R.id.btn_fix);
+            holder.btnDel = convertView.findViewById(R.id.btn_del);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -68,19 +70,40 @@ public class MyPublishListAdapter extends BaseAdapter {
 //        Glide.with(mContext).load("")
 
         // 修改按钮进入修改已发布的商品页面
-         holder.btnFix = convertView.findViewById(R.id.btn_fix);
-
          holder.btnFix.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-//                 Context ctx = MyApp.getContext();
                  Context ctx = MyPublishListAdapter.this.mContext;
                  Intent intent = new Intent(ctx, FixMyPublishActivity.class);
-//                 Toast.makeText(ctx, "111" , Toast.LENGTH_SHORT).show();
                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                  ctx.startActivity(intent);
              }
          });
+
+         // 删除按钮
+        holder.btnDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context ctx = MyPublishListAdapter.this.mContext;
+
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(ctx);
+                builder.setTitle("警告")
+                        .setMessage("确认删除本条发布信息?")
+                        .setIcon(R.drawable.warning)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MyPublishListAdapter.this.mContext, "已删除", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MyPublishListAdapter.this.mContext, "已取消", Toast.LENGTH_SHORT).show();
+                            }
+                        }).show();
+            }
+        });
 
         return convertView;
     }
