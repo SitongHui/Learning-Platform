@@ -1,14 +1,21 @@
 package com.example.learningplatform.listview;
 
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.learningplatform.BottomBarActivity;
+import com.example.learningplatform.FixMyPublishActivity;
+import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.R;
+import com.example.learningplatform.app.MyApp;
 
 import static com.example.learningplatform.R.layout.mypublish_layout_list_item;
 
@@ -60,6 +67,20 @@ public class MyPublishListAdapter extends BaseAdapter {
         holder.tvTitle.setText("这是标题");
 //        Glide.with(mContext).load("")
 
+        // 修改按钮进入修改已发布的商品页面
+         holder.btnFix = convertView.findViewById(R.id.btn_fix);
+
+         holder.btnFix.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+//                 Context ctx = MyApp.getContext();
+                 Context ctx = MyPublishListAdapter.this.mContext;
+                 Intent intent = new Intent(ctx, FixMyPublishActivity.class);
+//                 Toast.makeText(ctx, "111" , Toast.LENGTH_SHORT).show();
+                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 ctx.startActivity(intent);
+             }
+         });
 
         return convertView;
     }

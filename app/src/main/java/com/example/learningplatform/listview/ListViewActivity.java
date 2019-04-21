@@ -3,7 +3,10 @@ package com.example.learningplatform.listview;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.learningplatform.R;
 
@@ -22,5 +25,7 @@ public class ListViewActivity extends Activity {
         // 找到我的发布ListView
         myPublishListView = findViewById(R.id.lv_mypubulish);
         myPublishListView.setAdapter(new MyPublishListAdapter(ListViewActivity.this));
+
     }
+
 }

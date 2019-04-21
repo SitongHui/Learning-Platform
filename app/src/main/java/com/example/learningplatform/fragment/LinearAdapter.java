@@ -56,7 +56,7 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
 
     class LinearViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView mtv;
+        private TextView mtv;// todo 点击该listView进入详情页面
 
         public LinearViewHolder(@NonNull View itemView) {
             super(itemView);

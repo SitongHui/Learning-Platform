@@ -1,5 +1,6 @@
 package com.example.learningplatform.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.learningplatform.GoodsInfoActivity;
 import com.example.learningplatform.R;
 
 public class HomeFragment extends Fragment {
@@ -40,6 +42,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(int pos) {
                 Toast.makeText(getActivity(), "click" + pos, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), GoodsInfoActivity.class);
+                startActivity(intent);
             }
         }));
 

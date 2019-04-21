@@ -43,8 +43,6 @@ public class AddFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add,container,false);
-//        mTextView = (TextView)view.findViewById(R.id.txt_content);
-//        mTextView.setText(getArguments().getString("name"));// 将获取到的返回值放在setText内部
         return view;
     }
 

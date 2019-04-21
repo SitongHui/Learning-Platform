@@ -1,41 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    tools:context=".PublishActivity"
-    android:padding="10dp">
+    android:layout_margin="15dp"
+    android:orientation="vertical"
+    tools:context="com.airsaid.searchviewdemo.MainActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f0a2a2"
-        >
-        <Button
-            android:id="@+id/btn_fix"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="修改"></Button>
+        android:iconifiedByDefault="false"
+        android:queryHint="请输入搜索内容" />
 
-        <Button
-            android:id="@+id/btn_del"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="删除"
-            android:layout_marginLeft="50dp"></Button>
-
-    </LinearLayout>
-
-
-
-
-    <!--<View-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:background="#c3c3ad"-->
-        <!--android:text="123"></View>-->
-
-
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>
