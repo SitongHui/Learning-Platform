@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.learningplatform.GoodsInfoActivity;
 import com.example.learningplatform.R;
+import com.example.learningplatform.listview.MyPublishListAdapter;
 
 public class HomeFragment extends Fragment {
 
@@ -41,11 +42,13 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setAdapter(new LinearAdapter(getActivity(), new LinearAdapter.OnItemClickListener() {
             @Override
             public void onClick(int pos) {
-                Toast.makeText(getActivity(), "click" + pos, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "click" + pos, Toast.LENGTH_SHORT).show();
+                // 跳转到商品信息页面
                 Intent intent = new Intent(getContext(), GoodsInfoActivity.class);
                 startActivity(intent);
             }
         }));
+
 
         return view;
     }
@@ -62,6 +65,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+    // RecyclerView分隔线
     class MyDecoration extends RecyclerView.ItemDecoration{
         @Override
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {

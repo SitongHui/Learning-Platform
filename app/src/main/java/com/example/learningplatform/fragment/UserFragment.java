@@ -9,16 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.FixUserInfoActivity;
 import com.example.learningplatform.R;
+import com.example.learningplatform.app.userInfo;
 import com.example.learningplatform.listview.ListViewActivity;
 
 public class UserFragment extends Fragment {
 
-    private TextView mTextView;
-
+    // 用户个人信息
+    private TextView userName;
+    private TextView userPhone;
+    private TextView userSchoolName;
+    private TextView userSex;
 
     // 声明我的发布按钮
     private Button publishBtn;
@@ -43,6 +48,21 @@ public class UserFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        userInfo user = new userInfo();
+        user.setUserName("惠惠");
+        user.setTelephone("13659113748");
+
+        // 给用户信息赋值
+        userName = view.findViewById(R.id.user_name);
+        userPhone = view.findViewById(R.id.user_phone);
+        userSchoolName = view.findViewById(R.id.user_school_name);
+        userSex = view.findViewById(R.id.user_sex);
+
+        userName.setText("惠惠");
+        userPhone.setText("13659113748");
+        userSchoolName.setText("西邮");
+        userSex.setText("女");
 
 
         // 我的发布

@@ -14,7 +14,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/example"
+            android:src="@drawable/login"
             android:background="#dcd6d6"
             android:layout_gravity="center_horizontal"/><!--scaleType：缩放类型 -->
 

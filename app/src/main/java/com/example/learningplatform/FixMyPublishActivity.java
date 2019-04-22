@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class FixMyPublishActivity extends AppCompatActivity {
     // 商品图片
     private ImageView fixPic;
@@ -23,6 +25,10 @@ public class FixMyPublishActivity extends AppCompatActivity {
     private EditText fixDescribe;
 
     private String fixGoodsName, fixGoodsPrice, fixGoodsTel, fixGoodsDespribe;
+
+//    public ArrayList<String> a = new ArrayList<String>[];
+//    a.add("huihui");
+
 
     // 发布按钮
     private Button fixPublishBtn;
@@ -38,6 +44,13 @@ public class FixMyPublishActivity extends AppCompatActivity {
         fixTel = findViewById(R.id.fix_goods_tel);
         fixDescribe = findViewById(R.id.fix_goods_describe);
         fixPublishBtn = findViewById(R.id.btn_fix_publish);
+
+        // 根据物品信息赋值
+        fixName.setText("《物联网工程》");
+        fixPrice.setText("10");
+        fixTel.setText("18829213052");
+        fixDescribe.setText("本书是物联网工程的专业课书籍");
+
         init();
     }
 

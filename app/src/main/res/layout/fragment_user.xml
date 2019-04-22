@@ -17,7 +17,8 @@
             android:layout_weight="1.5"
             android:gravity="center"
             >
-            <TextView
+            <ImageView
+                android:id="@+id/user_pic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="#c4c4c9"
@@ -43,6 +44,7 @@
             ><!--layout_weight:把剩余内容按照比重评分开-->
 
             <TextView
+                android:id="@+id/user_name"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:text="huihui"
@@ -52,6 +54,7 @@
                 android:gravity="center"
                 />
             <TextView
+                android:id="@+id/user_phone"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:text="12345678911"
@@ -61,6 +64,7 @@
                 android:gravity="center"
                 />
             <TextView
+                android:id="@+id/user_school_name"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:text="西安邮电大学"
@@ -70,6 +74,7 @@
                 android:gravity="center"
                 />
             <TextView
+                android:id="@+id/user_sex"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:text="女"
