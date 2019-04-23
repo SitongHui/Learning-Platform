@@ -52,7 +52,7 @@
         android:layout_height="40dp"
         android:paddingLeft="5dp"
         android:layout_marginTop="20dp"
-        android:hint="请输入学校名称"
+        android:hint="请输入学院名称"
         android:background="@drawable/border"/>
 
     <RadioGroup

@@ -20,6 +20,8 @@ public class FixUserInfoActivity extends AppCompatActivity {
     private EditText schoolIcon;
     private RadioGroup myRadioGrop;
     private Button confirmBtn;
+    // 返回按钮
+    private Button fixUserInfoReturnBtn;
 
     private String tel, school;
 
@@ -51,6 +53,18 @@ public class FixUserInfoActivity extends AppCompatActivity {
 
         // 确定修改按钮
         confirmBtn = findViewById(R.id.confirm_btn);
+
+        // 返回按钮
+        fixUserInfoReturnBtn = findViewById(R.id.btn_fix_user_info_return);
+        fixUserInfoReturnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FixUserInfoActivity.this, BottomBarActivity.class);
+                intent.putExtra("id", 1);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         init();
     }

@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-//import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,9 +21,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.FixUserInfoActivity;
+import com.example.learningplatform.MainActivity;
 import com.example.learningplatform.R;
 import com.example.learningplatform.listview.ListViewActivity;
 
@@ -53,6 +54,7 @@ public class UserFragment extends Fragment {
     private Button btnFixPwdBtn;
     // 退出按钮
     private Button loginOutBtn;
+
 
     // 修改头像
     private static final String TAG = "PhotoImageFragment";
@@ -88,6 +90,76 @@ public class UserFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        userInfo user = new userInfo();
+//        user.setUserName("惠惠");
+//        user.setTelephone("13659113748");
+
+        // 给用户信息赋值
+        userName = view.findViewById(R.id.user_name);
+        userPhone = view.findViewById(R.id.user_phone);
+        userSchoolName = view.findViewById(R.id.user_school_name);
+        userSex = view.findViewById(R.id.user_sex);
+
+        userName.setText("惠惠");
+        userPhone.setText("13659113748");
+        userSchoolName.setText("通信与信息工程学院");
+        userSex.setText("女");
+
+
+        // 我的发布
+        publishBtn = view.findViewById(R.id.btn_publish);
+        publishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 跳转到发布页面
+                Intent intent = new Intent(getActivity(), ListViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 修改个人信息
+        fixUserInfoBtn = view.findViewById(R.id.btn_fixUserInfo);
+        fixUserInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 跳转到个人信息页面
+                Intent intent = new Intent(getActivity(), FixUserInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 修改密码
+        btnFixPwdBtn = view.findViewById(R.id.btn_fixPwd);
+        btnFixPwdBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 跳转到修改密码页面
+                Intent intent = new Intent(getActivity(), FixPwdActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 退出页面
+        loginOutBtn = view.findViewById(R.id.btn_loginOut);
+        loginOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 跳转到登录页面
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                Toast.makeText(getActivity(),"请重新登录", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+        });
+
+    }
+
+
 
     @Override
     public void onDestroyView() {
@@ -236,65 +308,6 @@ public class UserFragment extends Fragment {
         return state.equals(Environment.MEDIA_MOUNTED);
     }
 
-
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-//        userInfo user = new userInfo();
-//        user.setUserName("惠惠");
-//        user.setTelephone("13659113748");
-
-        // 给用户信息赋值
-        userName = view.findViewById(R.id.user_name);
-        userPhone = view.findViewById(R.id.user_phone);
-        userSchoolName = view.findViewById(R.id.user_school_name);
-        userSex = view.findViewById(R.id.user_sex);
-
-        userName.setText("惠惠");
-        userPhone.setText("13659113748");
-        userSchoolName.setText("西邮");
-        userSex.setText("女");
-
-
-        // 我的发布
-        publishBtn = view.findViewById(R.id.btn_publish);
-        publishBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 跳转到发布页面
-                Intent intent = new Intent(getActivity(), ListViewActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // 修改个人信息
-        fixUserInfoBtn = view.findViewById(R.id.btn_fixUserInfo);
-        fixUserInfoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 跳转到个人信息页面
-                Intent intent = new Intent(getActivity(), FixUserInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // 修改密码
-        btnFixPwdBtn = view.findViewById(R.id.btn_fixPwd);
-        btnFixPwdBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 跳转到修改密码页面
-                Intent intent = new Intent(getActivity(), FixPwdActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // 退出页面
-        loginOutBtn = view.findViewById(R.id.btn_loginOut);
-
-    }
 }
 
 

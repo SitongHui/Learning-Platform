@@ -19,6 +19,8 @@ public class FixPwdActivity extends AppCompatActivity {
     private EditText cNewPassword;
     // 确认按钮
     private Button confirmBtn;
+    // 返回按钮
+    private Button fixPwdReturnBtn;
 
     private String oldPwd, newPwd, cNewPwd;
 
@@ -26,6 +28,19 @@ public class FixPwdActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fix_pwd);
+
+        // 返回按钮
+        fixPwdReturnBtn = findViewById(R.id.btn_fix_pwd_return);
+        fixPwdReturnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FixPwdActivity.this, BottomBarActivity.class);
+                intent.putExtra("id", 2);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         init();
     }
 

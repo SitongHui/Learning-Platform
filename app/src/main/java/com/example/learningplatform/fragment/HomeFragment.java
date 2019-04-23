@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ public class HomeFragment extends Fragment {
 
     private EditText searchEditText;
     private RecyclerView mRecyclerView;
-
+    private Button searchBtn;
 
     public HomeFragment() {}
 
@@ -49,6 +50,8 @@ public class HomeFragment extends Fragment {
             }
         }));
 
+        // 搜索按钮
+        searchBtn = view.findViewById(R.id.btn_search);// todo
 
         return view;
     }
@@ -58,11 +61,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // 设置搜索图片大小
-        searchEditText = view.findViewById(R.id.search);
-        Drawable drawableSearch = getResources().getDrawable(R.drawable.icon_search);
-        drawableSearch.setBounds(0, 0, 70, 70);
-        searchEditText.setCompoundDrawables(null, null, drawableSearch, null);
-
+        searchEditText = view.findViewById(R.id.search); // todo 赋值
     }
 
     // RecyclerView分隔线

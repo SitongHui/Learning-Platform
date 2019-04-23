@@ -4,40 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_tel"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textSize="16sp"
-        android:textColor="#969292"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/border"
-        android:hint="请输入手机号"
-        android:inputType="number"
-        android:drawableLeft="@drawable/icon_tel"
-        android:drawablePadding="5dp"
-        />
-    <!--inputType: textPassword——密码暗文显示
-                       number——弹出数字键盘-->
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@drawable/border_bottom"
+        >
+        <Button
+            android:id="@+id/btn_fix_user_info_return"
+            android:layout_width="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/icon_return"
+            android:background="@drawable/bg_white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="修改个人信息"
+            android:textSize="20dp"
+            android:textColor="#595757"
+            android:layout_marginBottom="20dp"
+            />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <EditText
+            android:id="@+id/et_tel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="16sp"
+            android:textColor="#969292"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/border"
+            android:hint="请输入手机号"
+            android:inputType="number"
+            android:drawableLeft="@drawable/icon_tel"
+            android:drawablePadding="5dp"
+            />
+        <!--inputType: textPassword——密码暗文显示
+                           number——弹出数字键盘-->
         <!--hint：相当于placeholder-->
 
-    <EditText
-        android:id="@+id/et_school"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textSize="16sp"
-        android:textColor="#969292"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/border"
-        android:hint="请输入学校名称"
-        android:drawableLeft="@drawable/icon_school"
-        />
+        <EditText
+            android:id="@+id/et_school"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="16sp"
+            android:textColor="#969292"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/border"
+            android:hint="请输入学院名称"
+            android:drawableLeft="@drawable/icon_school"
+            />
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

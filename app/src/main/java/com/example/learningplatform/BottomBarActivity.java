@@ -37,7 +37,6 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_bottom_bar);
 
         fragmentManager = getSupportFragmentManager();
@@ -65,12 +64,21 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
         int id = getIntent().getIntExtra("id", 0);
         if (id == 1) {
             tabUser.setSelected(true); // 从修改个人信息返回到个人信息页面时对应的底部导航栏亮起
+            tabHome.setSelected(false);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, new UserFragment())
                     .addToBackStack(null).commit();
         } else if (id == 2) { // 从修改密码页面返回到个人信息页面
             tabUser.setSelected(true);
+            tabHome.setSelected(false);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new UserFragment())
+                    .addToBackStack(null).commit();
+        }  else if (id == 3) { // 从我的页面返回到个人信息页面
+            tabUser.setSelected(true);
+            tabHome.setSelected(false);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, new UserFragment())
