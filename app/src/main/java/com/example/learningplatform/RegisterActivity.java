@@ -111,3 +111,4 @@ public class RegisterActivity extends AppCompatActivity {
         school = schoolName.getText().toString().trim();
     }
 }
+
