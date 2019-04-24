@@ -30,4 +30,6 @@ dependencies {
     // ButterKnife框架
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    implementation 'com.jiechic.library:xUtils:2.6.14'
 }
