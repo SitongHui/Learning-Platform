@@ -1,6 +1,8 @@
 package com.example.learningplatform;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,11 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FixMyPublishActivity extends AppCompatActivity {
     // 商品图片
-    private ImageView fixPic;
+//    private ImageView fixPic;
     // 商品名称
     private EditText fixName;
     // 商品价格
@@ -26,19 +29,34 @@ public class FixMyPublishActivity extends AppCompatActivity {
 
     private String fixGoodsName, fixGoodsPrice, fixGoodsTel, fixGoodsDespribe;
 
-//    public ArrayList<String> a = new ArrayList<String>[];
-//    a.add("huihui");
-
-
     // 发布按钮
     private Button fixPublishBtn;
+
+    // 书籍图像
+//    private static final String TAG = "MainActivity";
+//    @ViewInject(R.id.my_goods_pic)
+//    private ImageView photo;
+//    @ViewInject(R.id.my_take_pic)
+//    private Button myTakePic;
+//    @ViewInject(R.id.my_gallery)
+//    private Button myTakeGallery;
+//    private static final int CODE_GALLERY_REQUEST = 0xa0;
+//    private static final int CODE_CAMERA_REQUEST = 0xa1;
+//    private static final int CODE_RESULT_REQUEST = 0xa2;
+//    private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 0x03;
+//    private static final int STORAGE_PERMISSIONS_REQUEST_CODE = 0x04;
+//    private File fileUri = new File(Environment.getExternalStorageDirectory().getPath() + "/photo.jpg");
+//    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
+//    private Uri imageUri;
+//    private Uri cropImageUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fix_my_publish);
 
-        fixPic = findViewById(R.id.fix_goods_pic); // todo
+//        fixPic = findViewById(R.id.fix_goods_pic); // todo
         fixName = findViewById(R.id.fix_goods_name);
         fixPrice = findViewById(R.id.fix_goods_price);
         fixTel = findViewById(R.id.fix_goods_tel);

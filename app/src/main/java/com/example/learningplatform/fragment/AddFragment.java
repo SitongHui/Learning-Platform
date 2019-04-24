@@ -1,11 +1,21 @@
 package com.example.learningplatform.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +29,18 @@ import com.example.learningplatform.BottomBarActivity;
 import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.R;
 
+import java.io.File;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
+import static android.app.Activity.RESULT_OK;
+
 public class AddFragment extends Fragment {
     // 商品图片
-    private ImageView pic;
+//    private ImageView pic;
     // 商品名称
     private EditText name;
     // 商品价格
@@ -36,6 +55,30 @@ public class AddFragment extends Fragment {
     // 发布按钮
     private Button publishBtn;
 
+
+    // 修改头像
+    private static final String TAG = "PhotoImageFragment";
+    @BindView(R.id.add_goods_pic)
+    ImageView addGoodsPic;
+    @BindView(R.id.add_take_pic)
+    Button addTakePic;
+    @BindView(R.id.add_gallery)
+    Button addGallery;
+    Unbinder unbinder;
+
+
+    private static final int CODE_GALLERY_REQUEST = 0xa0;
+    private static final int CODE_CAMERA_REQUEST = 0xa1;
+    private static final int CODE_RESULT_REQUEST = 0xa2;
+    private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 0x03;
+    private static final int STORAGE_PERMISSIONS_REQUEST_CODE = 0x04;
+    private File fileUri = new File(Environment.getExternalStorageDirectory().getPath() + "/photo.jpg");
+    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
+    private Uri imageUri;
+    private Uri cropImageUri;
+    private static final int OUTPUT_X = 480;
+    private static final int OUTPUT_Y = 480;
+
     public AddFragment() {}
 
 
@@ -49,7 +92,10 @@ public class AddFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pic = view.findViewById(R.id.goods_pic); // todo
+        unbinder = ButterKnife.bind(this, view);
+
+
+//        pic = view.findViewById(R.id.goods_pic); // todo
         name = view.findViewById(R.id.goods_name);
         price = view.findViewById(R.id.goods_price);
         tel = view.findViewById(R.id.goods_tel);
@@ -97,6 +143,155 @@ public class AddFragment extends Fragment {
         goodsPrice = price.getText().toString().trim();
         goodsTel = tel.getText().toString().trim();
         goodsDespribe = describe.getText().toString().trim();
+    }
+
+
+    // 打开相机及打开相册操作
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick({R.id.add_take_pic, R.id.add_gallery})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.add_take_pic:
+                autoObtainCameraPermission();
+                break;
+            case R.id.add_gallery:
+                autoObtainStoragePermission();
+                break;
+            default:
+        }
+    }
+
+    /**
+     * 动态申请sdcard读写权限
+     */
+    private void autoObtainStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+                PhotoUtils.openPic(this, CODE_GALLERY_REQUEST);
+            }
+        } else {
+            PhotoUtils.openPic(this, CODE_GALLERY_REQUEST);
+        }
+    }
+
+    /**
+     * 申请访问相机权限
+     */
+    private void autoObtainCameraPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
+                    ToastUtils.showShort(getActivity(), "您已经拒绝过一次");
+                }
+                requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_PERMISSIONS_REQUEST_CODE);
+            } else {//有权限直接调用系统相机拍照
+                if (hasSdcard()) {
+                    imageUri = Uri.fromFile(fileUri);
+                    //通过FileProvider创建一个content类型的Uri
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        imageUri = FileProvider.getUriForFile(getActivity(), "com.zz.fileprovider", fileUri);
+                    }
+                    PhotoUtils.takePicture(this, imageUri, CODE_CAMERA_REQUEST);
+                } else {
+                    ToastUtils.showShort(getActivity(), "设备没有SD卡！");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d(TAG, "onRequestPermissionsResult: ");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            //调用系统相机申请拍照权限回调
+            case CAMERA_PERMISSIONS_REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (hasSdcard()) {
+                        imageUri = Uri.fromFile(fileUri);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            //通过FileProvider创建一个content类型的Uri
+                            imageUri = FileProvider.getUriForFile(getActivity(), "com.zz.fileprovider", fileUri);
+                        }
+                        PhotoUtils.takePicture(this, imageUri, CODE_CAMERA_REQUEST);
+                    } else {
+                        ToastUtils.showShort(getActivity(), "设备没有SD卡！");
+                    }
+                } else {
+                    ToastUtils.showShort(getActivity(), "请允许打开相机！！");
+                }
+                break;
+            }
+            //调用系统相册申请Sdcard权限回调
+            case STORAGE_PERMISSIONS_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    PhotoUtils.openPic(this, CODE_GALLERY_REQUEST);
+                } else {
+                    ToastUtils.showShort(getActivity(), "请允许打操作SDCard！！");
+                }
+                break;
+            default:
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult: requestCode: " + requestCode + "  resultCode:" + resultCode);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            Log.e(TAG, "onActivityResult: resultCode!=RESULT_OK");
+            return;
+        }
+        switch (requestCode) {
+            //相机返回
+            case CODE_CAMERA_REQUEST:
+                cropImageUri = Uri.fromFile(fileCropUri);
+                PhotoUtils.cropImageUri(this, imageUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
+                break;
+            //相册返回
+            case CODE_GALLERY_REQUEST:
+
+                if (hasSdcard()) {
+                    cropImageUri = Uri.fromFile(fileCropUri);
+                    Uri newUri = Uri.parse(PhotoUtils.getPath(getActivity(), data.getData()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        newUri = FileProvider.getUriForFile(getActivity(), "com.zz.fileprovider", new File(newUri.getPath()));
+                    }
+                    PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
+                } else {
+                    ToastUtils.showShort(getActivity(), "设备没有SD卡！");
+                }
+                break;
+            //裁剪返回
+            case CODE_RESULT_REQUEST:
+                Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, getActivity());
+                if (bitmap != null) {
+                    showImages(bitmap);
+                }
+                break;
+            default:
+        }
+    }
+
+    private void showImages(Bitmap bitmap) {
+        addGoodsPic.setImageBitmap(bitmap);
+    }
+
+    /**
+     * 检查设备是否存在SDCard的工具方法
+     */
+    public static boolean hasSdcard() {
+        String state = Environment.getExternalStorageState();
+        return state.equals(Environment.MEDIA_MOUNTED);
     }
 
 }
