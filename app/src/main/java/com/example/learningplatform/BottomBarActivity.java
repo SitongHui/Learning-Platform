@@ -21,7 +21,6 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
     private TextView userIcon;
 
     // fragment
-    private TextView topBar;
     private TextView tabHome;
     private TextView tabAdd;
     private TextView tabUser;
@@ -76,12 +75,18 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
                     .beginTransaction()
                     .replace(R.id.fragment_container, new UserFragment())
                     .addToBackStack(null).commit();
-        }  else if (id == 3) { // 从我的页面返回到个人信息页面
+        } else if (id == 3) { // 从我的页面返回到个人信息页面
             tabUser.setSelected(true);
             tabHome.setSelected(false);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, new UserFragment())
+                    .addToBackStack(null).commit();
+        } else if (id == 4) { // 从商品详情页面返回到主页面
+            tabHome.setSelected(true);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
                     .addToBackStack(null).commit();
         }
     }
@@ -90,7 +95,6 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
 
     //UI组件初始化与事件绑定
     private void bindView() {
-//        topBar = findViewById(R.id.txt_top);
         tabHome = findViewById(R.id.txt_home);
         tabAdd = findViewById(R.id.txt_add);
         tabUser = findViewById(R.id.txt_user);

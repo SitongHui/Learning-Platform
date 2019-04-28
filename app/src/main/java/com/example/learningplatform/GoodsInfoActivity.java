@@ -22,10 +22,25 @@ public class GoodsInfoActivity extends Activity {
     // 展示联系电话
     private TextView showGoodsTel;
 
+    // 返回按钮
+    private Button goodsInfoReturnBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_info);
+
+        // 返回按钮
+        goodsInfoReturnBtn = findViewById(R.id.goods_info_return);
+        goodsInfoReturnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GoodsInfoActivity.this, BottomBarActivity.class);
+                intent.putExtra("id", 4);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         // 给商品信息赋值
         showGoodsName = findViewById(R.id.show_goods_name);
