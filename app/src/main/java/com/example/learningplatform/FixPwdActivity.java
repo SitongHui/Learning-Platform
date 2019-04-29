@@ -78,12 +78,10 @@ public class FixPwdActivity extends AppCompatActivity {
                     return;
 
                 } else {
-                    // 跳转到个人信息页面
-                    Intent intent = new Intent(FixPwdActivity.this, BottomBarActivity.class);
-                    intent.putExtra("id", 2);
+                    // 跳转到登录页面，重新登录
+                    Intent intent = new Intent(FixPwdActivity.this, MainActivity.class);
+                    Toast.makeText(FixPwdActivity.this,"修改成功，请重新登录",Toast.LENGTH_LONG).show();
                     startActivity(intent);
-                    Toast.makeText(FixPwdActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
-                    finish();
                 }
             }
         });

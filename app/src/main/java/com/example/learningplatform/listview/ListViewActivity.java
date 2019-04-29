@@ -37,7 +37,7 @@ public class ListViewActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ListViewActivity.this, BottomBarActivity.class);
-                intent.putExtra("id", 3);
+                intent.putExtra("id", 2);
                 startActivity(intent);
                 finish();
             }

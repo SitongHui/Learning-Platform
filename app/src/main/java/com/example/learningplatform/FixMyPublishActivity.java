@@ -18,8 +18,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.learningplatform.listview.ListViewActivity;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -43,6 +45,9 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
 
     // 发布按钮
     private Button fixPublishBtn;
+
+    // 返回按钮
+    private Button fixGoodsInfoReturnBtn;
 
     // 书籍图像
     private static final String TAG = "MainActivity";
@@ -77,6 +82,15 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
         fixTel = findViewById(R.id.fix_goods_tel);
         fixDescribe = findViewById(R.id.fix_goods_describe);
         fixPublishBtn = findViewById(R.id.btn_fix_publish);
+        fixGoodsInfoReturnBtn = findViewById(R.id.fix_goods_info_return);
+
+        fixGoodsInfoReturnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FixMyPublishActivity.this, ListViewActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // 根据物品信息赋值
         fixName.setText("《物联网工程》");

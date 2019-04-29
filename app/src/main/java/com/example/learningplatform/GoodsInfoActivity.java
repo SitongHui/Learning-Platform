@@ -36,7 +36,7 @@ public class GoodsInfoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GoodsInfoActivity.this, BottomBarActivity.class);
-                intent.putExtra("id", 4);
+                intent.putExtra("id", 3);
                 startActivity(intent);
                 finish();
             }
