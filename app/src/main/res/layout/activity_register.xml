@@ -5,89 +5,123 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp"
     tools:context=".RegisterActivity">
 
-    <EditText
-        android:id="@+id/reg_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:hint="请输入用户名"
-        android:background="@drawable/border"/>
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@drawable/border_bottom"
+        >
+        <Button
+            android:id="@+id/btn_register_return"
+            android:layout_width="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/icon_return"
+            android:background="@drawable/bg_white"/>
 
-    <EditText
-        android:id="@+id/reg_pwd"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:inputType="textPassword"
-        android:hint="请输入密码"
-        android:background="@drawable/border"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="注册"
+            android:textSize="20dp"
+            android:textColor="#595757"
+            android:layout_marginBottom="20dp"
+            />
 
-    <EditText
-        android:id="@+id/reg_confirm_pwd"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:inputType="textPassword"
-        android:hint="确认密码"
-        android:background="@drawable/border"/>
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/reg_tel"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:hint="请输入手机号"
-        android:inputType="number"
-        android:background="@drawable/border"/>
-
-    <EditText
-        android:id="@+id/reg_school_name"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:hint="请输入学院名称"
-        android:background="@drawable/border"/>
-
-    <RadioGroup
-        android:id="@+id/reg_sex"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:padding="15dp"
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/reg_men"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="男"
-            android:checked="true"
-            android:textSize="16sp"
-            />
-        <!--设置checked属性，必须要有id-->
-        <RadioButton
-            android:id="@+id/reg_women"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="女"
-            android:layout_marginLeft="100dp"
-            android:textSize="16sp"
-            />
-    </RadioGroup>
+        <EditText
+            android:id="@+id/reg_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:hint="请输入用户名"
+            android:background="@drawable/border"/>
 
-    <Button
-        android:id="@+id/reg_confirm_btn"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_radius"
-        android:text="确定"/>
+        <EditText
+            android:id="@+id/reg_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:inputType="textPassword"
+            android:hint="请输入密码"
+            android:background="@drawable/border"/>
+
+        <EditText
+            android:id="@+id/reg_confirm_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:inputType="textPassword"
+            android:hint="确认密码"
+            android:background="@drawable/border"/>
+
+        <EditText
+            android:id="@+id/reg_tel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:hint="请输入手机号"
+            android:inputType="number"
+            android:background="@drawable/border"/>
+
+        <EditText
+            android:id="@+id/reg_school_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:hint="请输入学院名称"
+            android:background="@drawable/border"/>
+
+        <RadioGroup
+            android:id="@+id/reg_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/reg_men"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="男"
+                android:checked="true"
+                android:textSize="16sp"
+                />
+            <!--设置checked属性，必须要有id-->
+            <RadioButton
+                android:id="@+id/reg_women"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="女"
+                android:layout_marginLeft="100dp"
+                android:textSize="16sp"
+                />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/reg_confirm_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_radius"
+            android:text="确定"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

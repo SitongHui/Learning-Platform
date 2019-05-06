@@ -48,9 +48,9 @@ public class GoodsInfoActivity extends Activity {
         showGoodsDescribe = findViewById(R.id.show_goods_describe);
         showGoodsTel = findViewById(R.id.show_goods_tel);
 
-        showGoodsName.setText("商品2");
+        showGoodsName.setText("Android studio");
         showGoodsPrice.setText("10" + "元");
-        showGoodsDescribe.setText("这个学习资料是真的好，上面还有学长学姐的笔记，价格实惠，绝对超值！");
+        showGoodsDescribe.setText("本书是Android开发可以用到的书籍，Java语言是学习这本书的基础。");
         showGoodsTel.setText("15291020570");
 
         dial = findViewById(R.id.btn_dial);

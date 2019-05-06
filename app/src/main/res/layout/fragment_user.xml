@@ -17,26 +17,12 @@
             android:layout_weight="1.5"
             android:gravity="center"
             >
-            <!--<ImageView
-                android:id="@+id/user_pic"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="#c4c4c9"
-                android:layout_marginBottom="20dp"/>
-
-            <Button
-                android:id="@+id/btn_fixPic"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:background="@drawable/btn_radius"
-                android:text="修改头像">
-            </Button>-->
             <ImageView
                 android:id="@+id/photo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/example"/>
+                android:src="@drawable/hello"/>
             <Button
                 android:id="@+id/takePic"
                 android:layout_width="100dp"

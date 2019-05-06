@@ -9,7 +9,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/example"
+        android:src="@drawable/hello"
         android:layout_gravity="center" />
 
     <LinearLayout

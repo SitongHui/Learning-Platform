@@ -22,6 +22,9 @@ public class RegisterActivity extends AppCompatActivity {
     // 学校名称
     private EditText schoolName;
 
+    // 返回按钮
+    private Button registerReturnBtn;
+
     private String userName, pwd, cPwd, phone, school;
 
     // 确认按钮
@@ -33,6 +36,14 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         regConfirmBtn = findViewById(R.id.reg_confirm_btn);
+        registerReturnBtn = findViewById(R.id.btn_register_return);
+        registerReturnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         init();
     }

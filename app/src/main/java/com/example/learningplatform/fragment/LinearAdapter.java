@@ -41,9 +41,9 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
     // 设置item的相关数据
     public void onBindViewHolder(@NonNull LinearAdapter.LinearViewHolder viewHolder, final int i) {
         // 给页面赋值
-        viewHolder.showName.setText("hello world");
-        viewHolder.showPrice.setText("123");
-        viewHolder.showDes.setText("这是通信与信息工程学院物联网工程的《物联网概论》");
+        viewHolder.showName.setText("Android studio");
+        viewHolder.showPrice.setText("10");
+        viewHolder.showDes.setText("本书是Android开发可以用到的书籍，Java语言是学习这本书的基础。");
 
         // 添加点击事件
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() { // 给每个item添加点击事件
