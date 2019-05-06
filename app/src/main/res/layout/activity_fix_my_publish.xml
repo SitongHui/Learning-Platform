@@ -38,7 +38,7 @@
             android:id="@+id/my_goods_pic"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="#ee8080"
+            android:background="@drawable/book"
             android:layout_gravity="center" />
 
         <LinearLayout
