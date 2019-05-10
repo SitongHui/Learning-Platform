@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.learningplatform.app.Goods;
+
 public class GoodsInfoActivity extends Activity {
 
     // 拨号按钮
@@ -24,12 +26,12 @@ public class GoodsInfoActivity extends Activity {
 
     // 返回按钮
     private Button goodsInfoReturnBtn;
-
+    private Goods goods = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_info);
-
+        goods = (Goods) getIntent().getExtras().get("goods");
         // 返回按钮
         goodsInfoReturnBtn = findViewById(R.id.goods_info_return);
         goodsInfoReturnBtn.setOnClickListener(new View.OnClickListener() {
@@ -48,17 +50,17 @@ public class GoodsInfoActivity extends Activity {
         showGoodsDescribe = findViewById(R.id.show_goods_describe);
         showGoodsTel = findViewById(R.id.show_goods_tel);
 
-        showGoodsName.setText("Android studio");
-        showGoodsPrice.setText("10" + "元");
-        showGoodsDescribe.setText("本书是Android开发可以用到的书籍，Java语言是学习这本书的基础。");
+        showGoodsName.setText(goods.getName());
+        showGoodsPrice.setText(goods.getPrice() + "元");
+        showGoodsDescribe.setText(goods.getDesc());
         showGoodsTel.setText("15291020570");
 
         dial = findViewById(R.id.btn_dial);
         dial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 调出拨号界面
-                Intent Intent =  new Intent(android.content.Intent.ACTION_DIAL, Uri.parse("tel:" + showGoodsTel.getText().toString().trim()));//跳转到拨号界面，同时传递电话号码
+                // 调出拨号界面，同时传递电话号码
+                Intent Intent =  new Intent(android.content.Intent.ACTION_DIAL, Uri.parse("tel:" + showGoodsTel.getText().toString().trim()));
                 startActivity(Intent);
             }
         });

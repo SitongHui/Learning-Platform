@@ -13,7 +13,10 @@ import android.widget.Toast;
 import com.example.learningplatform.FixMyPublishActivity;
 import com.example.learningplatform.GoodsInfoActivity;
 import com.example.learningplatform.R;
+import com.example.learningplatform.app.Goods;
 import com.example.learningplatform.listview.MyPublishListAdapter;
+
+import java.util.List;
 
 public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearViewHolder> {
 
@@ -21,11 +24,12 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
     private OnItemClickListener mlistener;
 
     // 列表数据
-//    private List<String> list;
+    private List<Goods> goodsList;
 
-    public LinearAdapter(Context context, OnItemClickListener listener) {
+    public LinearAdapter(Context context, List<Goods> goodsList, OnItemClickListener listener) {
         this.mContext = context;
         this.mlistener = listener;
+        this.goodsList = goodsList;
     }
 
     @NonNull
@@ -41,9 +45,9 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
     // 设置item的相关数据
     public void onBindViewHolder(@NonNull LinearAdapter.LinearViewHolder viewHolder, final int i) {
         // 给页面赋值
-        viewHolder.showName.setText("Android studio");
-        viewHolder.showPrice.setText("10");
-        viewHolder.showDes.setText("本书是Android开发可以用到的书籍，Java语言是学习这本书的基础。");
+        viewHolder.showName.setText(goodsList.get(i).getName());
+        viewHolder.showPrice.setText(goodsList.get(i).getPrice().toString());
+        viewHolder.showDes.setText(goodsList.get(i).getDesc());
 
         // 添加点击事件
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() { // 给每个item添加点击事件
@@ -59,10 +63,10 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
     @Override
     // 列表长度
     public int getItemCount() {
-        return 10;
+        return goodsList == null ? 0 : goodsList.size();
     }
 
-    class LinearViewHolder extends RecyclerView.ViewHolder{
+    class LinearViewHolder extends RecyclerView.ViewHolder {
 
         private TextView showName;
         private TextView showPrice;
@@ -76,7 +80,7 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
         }
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onClick(int pos);
     }
 }

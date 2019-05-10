@@ -1,23 +1,22 @@
 package com.example.learningplatform.app;
 
 public class userInfo {
-    private String userName;
+    private String username;
     private String password;
-    private String goodsName;
-    private String goodsPrice;
-    private String telephone;
-    private String description;
+    private String gender;
+    private String phone;
+    private String department;
 
     public userInfo(){
 
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
-    public void setUserName(String userName){
-        this.userName = userName;
+    public void setUserName(String username){
+        this.username = username;
     }
 
     public void setPassword(String password){
@@ -28,37 +27,28 @@ public class userInfo {
         return password;
     }
 
-
-    public void setGoodsName(String goodsName){
-        this.goodsName = goodsName;
+    public void setGender(String gender){
+        this.gender = gender;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public String getGender() {
+        return gender;
     }
 
-    public void setGoodsPrice(String goodsPrice){
-        this.goodsPrice = goodsPrice;
+    public void setPhone(String phone){
+        this.phone = phone;
     }
 
-    public String getGoodsPrice() {
-        return goodsPrice;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelephone(String telephone){
-        this.telephone = telephone;
+    public void setDepartment(String department){
+        this.department = department;
     }
 
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setDescription(String description){
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
+    public String getDepartment() {
+        return department;
     }
 }
 
