@@ -37,7 +37,7 @@ import okhttp3.Response;
 
 public class HomeFragment extends Fragment {
 
-    private final String TAG="HomeFragment";// 随意叫什么名字，只是为了logcat方便过滤
+    private final String TAG = "HomeFragment";// 随意叫什么名字，只是为了logcat方便过滤
 
     private EditText searchEditText;
     private RecyclerView mRecyclerView;
@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getData() {
-        String url = "http://127.0.0.1:3000/lp/v1/goods";
+        String url = "http://192.168.1.104:3000/lp/v1/goods";
         OkHttpClient okHttpClient = new OkHttpClient();
         final Request request = new Request.Builder()
                 .url(url)
@@ -92,15 +92,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: "+e.toString());
-                String result ="[{\"desc\":\"大学英语数据\",\"id\":1,\"name\":\"英语书\",\"price\":25.6},{\"desc\":\"大学数学书据\",\"id\":1,\"name\":\"数学书\",\"price\":25.6},{\"desc\":\"大学娃娃书据\",\"id\":1,\"name\":\"娃娃书\",\"price\":25.6}]";
-                applyData2Ui(result); // 此行和上面一行到时删除
+//                String result ="[{\"desc\":\"大学英语数据\",\"id\":1,\"name\":\"英语书\",\"price\":25.6},{\"desc\":\"大学数学书据\",\"id\":1,\"name\":\"数学书\",\"price\":25.6},{\"desc\":\"大学娃娃书据\",\"id\":1,\"name\":\"娃娃书\",\"price\":25.6}]";
+//                applyData2Ui(result); // 此行和上面一行到时删除
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d(TAG, "onResponse: " + response.body().toString());
 //                Gson~~~
-//                applyData2Ui(response.body().toString()); // todo
+                applyData2Ui(response.body().toString());
             }
         });
     }

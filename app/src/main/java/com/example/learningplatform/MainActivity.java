@@ -2,9 +2,11 @@ package com.example.learningplatform;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button; // 引入button组件
 import android.widget.EditText;
@@ -12,7 +14,19 @@ import android.widget.Toast;
 
 import com.example.learningplatform.listview.ListViewActivity;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
+    private final String TAG = "MainActivity";
 
     private EditText login;
     private EditText password;
@@ -61,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getEditString();
-                if (TextUtils.isEmpty(loginName)) { // todo 判断用户名是否存在，对应的用户密码是否正确
+                if (TextUtils.isEmpty(loginName)) {
                     Toast.makeText(MainActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
                     return;
 
@@ -70,14 +84,51 @@ public class MainActivity extends AppCompatActivity {
                     return;
 
                 } else {
-                    // 跳转到个人页面
-                    Intent intent = new Intent(MainActivity.this, BottomBarActivity.class);
-                    startActivity(intent);
+                    postData();
                 }
 
             }
         });
 
+    }
+
+    private void postData() {
+        getEditString();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        String url = "http://192.168.1.104:3000/lp/v1/user/login";
+        RequestBody requestBody = new FormBody.Builder()
+                .add("username", loginName)
+                .add("password", pwd)
+                .build();// add的name和后台读取参数的名字一致
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, "onResponse: " + response.message().toString());
+                if(response.code() == 200) {
+                    // 跳转到登录页面
+                    Intent intent = new Intent(MainActivity.this, BottomBarActivity.class);
+                    Looper.prepare();
+                    Toast.makeText(MainActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    Looper.loop();
+                } else if (response.code() == 500) {
+                    Looper.prepare();
+                    Toast.makeText(MainActivity.this, "用户名与密码不匹配，请重新输入", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+        });
     }
 
     private void getEditString() {

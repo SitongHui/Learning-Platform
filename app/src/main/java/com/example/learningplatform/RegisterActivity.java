@@ -33,7 +33,7 @@ import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private final String TAG="RegisterActivity";
+    private final String TAG = "RegisterActivity";
 //    private List<userInfo> userInfo = new ArrayList<>();
 
     // 用户名
