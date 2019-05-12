@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getData() {
-        String url = "http://127.0.0.1:3000/lp/v1/user/login?username=xingshang&password=123456";
+        String url = "http://127.0.0.1:3000/lp/v1/goods";
         OkHttpClient okHttpClient = new OkHttpClient();
         final Request request = new Request.Builder()
                 .url(url)
