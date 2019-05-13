@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.learningplatform.app.Goods;
+import com.example.learningplatform.app.GoodsEntity;
 
 public class GoodsInfoActivity extends Activity {
 
@@ -26,12 +27,12 @@ public class GoodsInfoActivity extends Activity {
 
     // 返回按钮
     private Button goodsInfoReturnBtn;
-    private Goods goods = null ;
+    private GoodsEntity.GoodsInfo goods = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_info);
-        goods = (Goods) getIntent().getExtras().get("goods");
+        goods = (GoodsEntity.GoodsInfo) getIntent().getExtras().get("goods");
         // 返回按钮
         goodsInfoReturnBtn = findViewById(R.id.goods_info_return);
         goodsInfoReturnBtn.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +53,7 @@ public class GoodsInfoActivity extends Activity {
 
         showGoodsName.setText(goods.getName());
         showGoodsPrice.setText(goods.getPrice() + "元");
-        showGoodsDescribe.setText(goods.getDesc());
+
         showGoodsTel.setText("15291020570");
 
         dial = findViewById(R.id.btn_dial);

@@ -15,8 +15,7 @@ import android.widget.Toast;
 
 import com.example.learningplatform.app.Goods;
 import com.example.learningplatform.app.userInfo;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -163,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10L, TimeUnit.SECONDS)
                 .build();
-        String url = "http://192.168.1.104:3000/lp/v1/user/register";
+        String url = "http://"+Constancts.IP+"/lp/v1/user/register";
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", userName)
                 .add("password", pwd)

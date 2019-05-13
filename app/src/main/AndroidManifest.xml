@@ -30,7 +30,8 @@
         <activity android:name=".PublishActivity" />
         <activity android:name=".listview.ListViewActivity" />
         <activity android:name=".FixUserInfoActivity" />
-        <activity android:name=".BottomBarActivity" />
+        <activity android:name=".BottomBarActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".FixPwdActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".GoodsInfoActivity" />

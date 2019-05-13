@@ -1,12 +1,14 @@
 package com.example.learningplatform.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -26,15 +28,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.learningplatform.BottomBarActivity;
+import com.example.learningplatform.Constancts;
 import com.example.learningplatform.FixPwdActivity;
+import com.example.learningplatform.MainActivity;
 import com.example.learningplatform.R;
+import com.example.learningplatform.RegisterActivity;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -128,10 +143,7 @@ public class AddFragment extends Fragment {
                     Toast.makeText(getActivity(), "请输入商品描述", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    // 发布成功，跳转到主页
-                    Intent intent = new Intent(getActivity(), BottomBarActivity.class);
-                    Toast.makeText(getActivity(), "发布成功", Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
+                    postData();
                 }
             }
         });
@@ -144,6 +156,53 @@ public class AddFragment extends Fragment {
         goodsTel = tel.getText().toString().trim();
         goodsDespribe = describe.getText().toString().trim();
     }
+
+    private void postData() {
+        getEditString();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10L, TimeUnit.SECONDS)
+                .build();
+        int userId = Objects.requireNonNull(getActivity()).getSharedPreferences(Constancts.SP_NAME, Context.MODE_PRIVATE).getInt("userId", -1);
+        String url = "http://"+ Constancts.IP+"/lp/v1/goods";
+        RequestBody requestBody = new FormBody.Builder()
+                .add("name", goodsName)
+                .add("price", goodsPrice)
+                .add("description", goodsDespribe)
+                .add("userId", userId+"")
+                .add("faceUrl", "")
+                .build();// todo 头像，电话（登录的用户电话） ownerid如何获取
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, "onResponse: " + response.message().toString());
+                if(response.code() == 200) {
+                    // 发布成功，跳转到主页
+                    Intent intent = new Intent(getActivity(), BottomBarActivity.class);
+                    Looper.prepare();
+                    Toast.makeText(getActivity(), "发布成功", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    Looper.loop();
+
+                } else if (response.code() == 500) {
+                    Looper.prepare();
+                    Toast.makeText(getContext(), "发布失败，请重新发布", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+        });
+    }
+
 
 
     // 打开相机及打开相册操作

@@ -1,6 +1,8 @@
 package com.example.learningplatform;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +14,9 @@ import android.widget.Button; // 引入button组件
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.learningplatform.app.LoginEntity;
 import com.example.learningplatform.listview.ListViewActivity;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private void postData() {
         getEditString();
         OkHttpClient okHttpClient = new OkHttpClient();
-        String url = "http://192.168.1.104:3000/lp/v1/user/login";
+        String url = "http://"+Constancts.IP+"/lp/v1/user/login";
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", loginName)
                 .add("password", pwd)
@@ -116,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d(TAG, "onResponse: " + response.message().toString());
                 if(response.code() == 200) {
+                    Gson gson=new Gson();
+                    LoginEntity loginEntity = gson.fromJson(response.body().string(), LoginEntity.class);
+                    SharedPreferences.Editor editor = MainActivity.this.getSharedPreferences(Constancts.SP_NAME, Context.MODE_PRIVATE).edit();
+                    editor.putInt("userId",loginEntity.getUserId());
+                    editor.apply();
                     // 跳转到登录页面
                     Intent intent = new Intent(MainActivity.this, BottomBarActivity.class);
                     Looper.prepare();

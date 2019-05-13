@@ -18,12 +18,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.example.learningplatform.Constancts;
 import com.example.learningplatform.GoodsInfoActivity;
 import com.example.learningplatform.R;
 import com.example.learningplatform.app.Goods;
+import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.listview.MyPublishListAdapter;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,9 +35,12 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class HomeFragment extends Fragment {
 
@@ -45,7 +52,7 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {}
 
-    private List<Goods> goodsList =new ArrayList<>();
+    private List<GoodsEntity.GoodsInfo> goodsList =new ArrayList<>();
     private LinearAdapter adapter = null ; // 先设置为null
     @Nullable
     @Override
@@ -63,7 +70,7 @@ public class HomeFragment extends Fragment {
 //                Toast.makeText(getActivity(), "click" + pos, Toast.LENGTH_SHORT).show();
                 // 跳转到商品信息页面
                 Intent intent = new Intent(getContext(), GoodsInfoActivity.class);
-                Goods goods = goodsList.get(pos);
+                GoodsEntity.GoodsInfo goods = goodsList.get(pos);
                 Bundle bundle=new Bundle();
                 bundle.putParcelable("goods",goods);
                 intent.putExtras(bundle);
@@ -81,8 +88,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void getData() {
-        String url = "http://192.168.1.104:3000/lp/v1/goods";
-        OkHttpClient okHttpClient = new OkHttpClient();
+        String url = "http://"+ Constancts.IP+"/lp/v1/goods";
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        Log.v(TAG,message);
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
         final Request request = new Request.Builder()
                 .url(url)
                 .get()//默认就是GET请求，可以不写
@@ -98,18 +112,23 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, "onResponse: " + response.body().toString());
 //                Gson~~~
-                applyData2Ui(response.body().toString());
+                applyData2Ui(response.body().string());
             }
         });
     }
 
     private void applyData2Ui(String result) {
-        Gson gson=new Gson();
-        goodsList .addAll((List<Goods>)gson.fromJson(result,new TypeToken<List<Goods>>(){}.getType()));
+        Gson gson = new Gson();
+        GoodsEntity goodsEntity = gson.fromJson(result, GoodsEntity.class);
+        goodsList.addAll(goodsEntity.getData());
         // 刷新视图
-        adapter.notifyDataSetChanged();
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

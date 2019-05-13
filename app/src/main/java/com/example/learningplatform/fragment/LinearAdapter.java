@@ -14,6 +14,7 @@ import com.example.learningplatform.FixMyPublishActivity;
 import com.example.learningplatform.GoodsInfoActivity;
 import com.example.learningplatform.R;
 import com.example.learningplatform.app.Goods;
+import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.listview.MyPublishListAdapter;
 
 import java.util.List;
@@ -24,9 +25,9 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
     private OnItemClickListener mlistener;
 
     // 列表数据
-    private List<Goods> goodsList;
+    private List<GoodsEntity.GoodsInfo> goodsList;
 
-    public LinearAdapter(Context context, List<Goods> goodsList, OnItemClickListener listener) {
+    public LinearAdapter(Context context, List<GoodsEntity.GoodsInfo> goodsList, OnItemClickListener listener) {
         this.mContext = context;
         this.mlistener = listener;
         this.goodsList = goodsList;
@@ -46,8 +47,8 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
     public void onBindViewHolder(@NonNull LinearAdapter.LinearViewHolder viewHolder, final int i) {
         // 给页面赋值
         viewHolder.showName.setText(goodsList.get(i).getName());
-        viewHolder.showPrice.setText(goodsList.get(i).getPrice().toString());
-        viewHolder.showDes.setText(goodsList.get(i).getDesc());
+//        viewHolder.showPrice.setText(goodsList.get(i).getPrice().toString());
+//        viewHolder.showDes.setText(goodsList.get(i).getDesc());
 
         // 添加点击事件
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() { // 给每个item添加点击事件
