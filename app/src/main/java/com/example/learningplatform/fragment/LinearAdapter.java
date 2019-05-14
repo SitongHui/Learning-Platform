@@ -47,8 +47,9 @@ public class LinearAdapter extends RecyclerView.Adapter<LinearAdapter.LinearView
     public void onBindViewHolder(@NonNull LinearAdapter.LinearViewHolder viewHolder, final int i) {
         // 给页面赋值
         viewHolder.showName.setText(goodsList.get(i).getName());
-//        viewHolder.showPrice.setText(goodsList.get(i).getPrice().toString());
-//        viewHolder.showDes.setText(goodsList.get(i).getDesc());
+        viewHolder.showPrice.setText("" + goodsList.get(i).getPrice() + "元");
+        viewHolder.showDes.setText(goodsList.get(i).getDescription());
+        // todo 电话号码
 
         // 添加点击事件
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() { // 给每个item添加点击事件

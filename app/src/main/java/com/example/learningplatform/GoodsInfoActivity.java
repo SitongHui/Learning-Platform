@@ -53,8 +53,9 @@ public class GoodsInfoActivity extends Activity {
 
         showGoodsName.setText(goods.getName());
         showGoodsPrice.setText(goods.getPrice() + "元");
+        showGoodsDescribe.setText(goods.getDescription());
 
-        showGoodsTel.setText("15291020570");
+        showGoodsTel.setText("15291020570");// todo
 
         dial = findViewById(R.id.btn_dial);
         dial.setOnClickListener(new View.OnClickListener() {

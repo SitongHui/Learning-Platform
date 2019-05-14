@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,17 +63,17 @@ public class HomeFragment extends Fragment {
 
         // 所有商品的发布RecyclerView
         mRecyclerView = view.findViewById(R.id.recycler_view);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         mRecyclerView.addItemDecoration(new MyDecoration()); // 添加分割线
         adapter = new LinearAdapter(getActivity(),goodsList, new LinearAdapter.OnItemClickListener() { // 此时goodsList为空
             @Override
             public void onClick(int pos) {
-//                Toast.makeText(getActivity(), "click" + pos, Toast.LENGTH_SHORT).show();
                 // 跳转到商品信息页面
                 Intent intent = new Intent(getContext(), GoodsInfoActivity.class);
                 GoodsEntity.GoodsInfo goods = goodsList.get(pos);
                 Bundle bundle=new Bundle();
-                bundle.putParcelable("goods",goods);
+                bundle.putParcelable("goods", goods);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -106,8 +107,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d(TAG, "onFailure: "+e.toString());
-//                String result ="[{\"desc\":\"大学英语数据\",\"id\":1,\"name\":\"英语书\",\"price\":25.6},{\"desc\":\"大学数学书据\",\"id\":1,\"name\":\"数学书\",\"price\":25.6},{\"desc\":\"大学娃娃书据\",\"id\":1,\"name\":\"娃娃书\",\"price\":25.6}]";
-//                applyData2Ui(result); // 此行和上面一行到时删除
             }
 
             @Override
@@ -122,7 +121,7 @@ public class HomeFragment extends Fragment {
         Gson gson = new Gson();
         GoodsEntity goodsEntity = gson.fromJson(result, GoodsEntity.class);
         goodsList.addAll(goodsEntity.getData());
-        // 刷新视图
+        // 主线程刷新视图
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
