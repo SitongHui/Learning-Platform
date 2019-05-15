@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private void postData() {
         getEditString();
         OkHttpClient okHttpClient = new OkHttpClient();
-        String url = "http://"+Constancts.IP+"/lp/v1/user/login";
+        String url = "http://" +Constancts.IP+ "/lp/v1/user/login";
         RequestBody requestBody = new FormBody.Builder()
                 .add("username", loginName)
                 .add("password", pwd)
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 if(response.code() == 200) {
                     Gson gson=new Gson();
                     LoginEntity loginEntity = gson.fromJson(response.body().string(), LoginEntity.class);
-                    SharedPreferences.Editor editor = MainActivity.this.getSharedPreferences(Constancts.SP_NAME, Context.MODE_PRIVATE).edit();
+                    SharedPreferences.Editor editor = MainActivity.this.getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).edit();
                     editor.putInt("userId",loginEntity.getUserId());
                     editor.apply();
                     // 跳转到登录页面

@@ -2,7 +2,6 @@ package com.example.learningplatform.fragment;
 
 import android.content.Intent;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -15,18 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.example.learningplatform.Constancts;
 import com.example.learningplatform.GoodsInfoActivity;
 import com.example.learningplatform.R;
-import com.example.learningplatform.app.Goods;
 import com.example.learningplatform.app.GoodsEntity;
-import com.example.learningplatform.listview.MyPublishListAdapter;
 import com.google.gson.Gson;
 
 
@@ -36,10 +28,8 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -51,9 +41,11 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private Button searchBtn;
 
+    public String seachText;
+
     public HomeFragment() {}
 
-    private List<GoodsEntity.GoodsInfo> goodsList =new ArrayList<>();
+    private List<GoodsEntity.GoodsInfo> goodsList = new ArrayList<>();
     private LinearAdapter adapter = null ; // 先设置为null
     @Nullable
     @Override
@@ -83,13 +75,49 @@ public class HomeFragment extends Fragment {
         getData();
 
         // 搜索按钮
-        searchBtn = view.findViewById(R.id.btn_search);// todo
+        searchBtn = view.findViewById(R.id.btn_search);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchData();
+            }
+        });
 
         return view;
     }
 
     private void getData() {
-        String url = "http://"+ Constancts.IP+"/lp/v1/goods";
+        String url = "http://"+ Constancts.IP +"/lp/v1/goods";
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        Log.v(TAG,message);
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()//默认就是GET请求，可以不写
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+//                Gson~~~
+                applyData2Ui(response.body().string());
+            }
+        });
+    }
+
+    private void searchData() {
+        getEditString();
+        String url = "http://"+ Constancts.IP +"/lp/v1/goods?keyword=" + seachText;
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                     @Override
@@ -120,14 +148,32 @@ public class HomeFragment extends Fragment {
     private void applyData2Ui(String result) {
         Gson gson = new Gson();
         GoodsEntity goodsEntity = gson.fromJson(result, GoodsEntity.class);
-        goodsList.addAll(goodsEntity.getData());
-        // 主线程刷新视图
-        mRecyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                adapter.notifyDataSetChanged();
-            }
-        });
+        if (seachText == null) {
+            // 主线程刷新视图
+            goodsList.addAll(goodsEntity.getData());
+            mRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+            // 清空之前的数据
+            goodsList.clear();
+            goodsList.addAll(goodsEntity.getData());
+            // 主线程刷新视图
+            mRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+    }
+
+    private void getEditString() {
+        seachText = searchEditText.getText().toString().trim();
     }
 
     @Override

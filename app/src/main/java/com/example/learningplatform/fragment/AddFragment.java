@@ -162,7 +162,7 @@ public class AddFragment extends Fragment {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10L, TimeUnit.SECONDS)
                 .build();
-        int userId = Objects.requireNonNull(getActivity()).getSharedPreferences(Constancts.SP_NAME, Context.MODE_PRIVATE).getInt("userId", -1);
+        int userId = Objects.requireNonNull(getActivity()).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
         String url = "http://"+ Constancts.IP+"/lp/v1/goods";
         RequestBody requestBody = new FormBody.Builder()
                 .add("name", goodsName)

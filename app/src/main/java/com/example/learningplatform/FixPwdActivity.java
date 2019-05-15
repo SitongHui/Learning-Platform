@@ -1,15 +1,34 @@
 package com.example.learningplatform;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.learningplatform.app.LoginEntity;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class FixPwdActivity extends AppCompatActivity {
+    private final String TAG = "FixPwdActivity";
 
     // 原密码
     private EditText password;
@@ -78,10 +97,7 @@ public class FixPwdActivity extends AppCompatActivity {
                     return;
 
                 } else {
-                    // 跳转到登录页面，重新登录
-                    Intent intent = new Intent(FixPwdActivity.this, MainActivity.class);
-                    Toast.makeText(FixPwdActivity.this,"修改成功，请重新登录",Toast.LENGTH_LONG).show();
-                    startActivity(intent);
+                    postData();
                 }
             }
         });
@@ -92,6 +108,46 @@ public class FixPwdActivity extends AppCompatActivity {
         oldPwd = password.getText().toString().trim();
         newPwd = newPassword.getText().toString().trim();
         cNewPwd = cNewPassword.getText().toString().trim();
+    }
+
+    private void postData() {
+        int userId = Objects.requireNonNull(this).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
+
+        getEditString();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        String url = "http://" + Constancts.IP + "/lp/v1/user/" + userId;
+        RequestBody requestBody = new FormBody.Builder()
+                .add("password", cNewPwd)
+                .build();// add的name和后台读取参数的名字一致
+
+        Request request = new Request.Builder()
+                .url(url)
+                .put(requestBody)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, "onResponse: " + response.message().toString());
+                if(response.code() == 200) {
+                    // 跳转到登录页面，重新登录
+                    Intent intent = new Intent(FixPwdActivity.this, MainActivity.class);
+                    Looper.prepare();
+                    Toast.makeText(FixPwdActivity.this,"修改成功，请重新登录",Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+                    Looper.loop();
+                } else if (response.code() == 500) {
+                    Looper.prepare();
+                    Toast.makeText(FixPwdActivity.this, "修改失败，请重新修改", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+        });
     }
 
 }
