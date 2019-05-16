@@ -82,14 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
         schoolName = findViewById(R.id.reg_school_name);
         genderGroup = findViewById(R.id.reg_sex);
 
-//        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                RadioButton radioButton = group.findViewById(checkedId);
-//                // Toast.makeText(FixUserInfoActivity.this,radioButton.getText(),Toast.LENGTH_SHORT).show(); // 取RadioButton的值
-//            }
-//        });
-
         regConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .add("phone", phone)
                 .add("department", department)
                 .add("gender", gender)
-                .build();// add的name和后台读取参数的名字一致
+                .build();
 
         Request request = new Request.Builder()
                 .url(url)

@@ -27,7 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PublishActivity" />
         <activity android:name=".listview.ListViewActivity" />
         <activity android:name=".FixUserInfoActivity" />
         <activity android:name=".BottomBarActivity"

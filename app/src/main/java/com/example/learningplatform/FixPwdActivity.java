@@ -97,7 +97,7 @@ public class FixPwdActivity extends AppCompatActivity {
                     return;
 
                 } else {
-                    postData();
+                    fixData();
                 }
             }
         });
@@ -110,7 +110,7 @@ public class FixPwdActivity extends AppCompatActivity {
         cNewPwd = cNewPassword.getText().toString().trim();
     }
 
-    private void postData() {
+    private void fixData() {
         int userId = Objects.requireNonNull(this).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
 
         getEditString();
@@ -118,7 +118,7 @@ public class FixPwdActivity extends AppCompatActivity {
         String url = "http://" + Constancts.IP + "/lp/v1/user/" + userId;
         RequestBody requestBody = new FormBody.Builder()
                 .add("password", cNewPwd)
-                .build();// add的name和后台读取参数的名字一致
+                .build();
 
         Request request = new Request.Builder()
                 .url(url)
@@ -143,7 +143,7 @@ public class FixPwdActivity extends AppCompatActivity {
                     Looper.loop();
                 } else if (response.code() == 500) {
                     Looper.prepare();
-                    Toast.makeText(FixPwdActivity.this, "修改失败，请重新修改", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FixPwdActivity.this, "修改失败，请重新输入", Toast.LENGTH_SHORT).show();
                     Looper.loop();
                 }
             }
