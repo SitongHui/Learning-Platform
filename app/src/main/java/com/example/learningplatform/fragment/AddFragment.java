@@ -60,12 +60,10 @@ public class AddFragment extends Fragment {
     private EditText name;
     // 商品价格
     private EditText price;
-    // 联系方式
-    private EditText tel;
     // 商品描述
     private EditText describe;
 
-    private String goodsName, goodsPrice, goodsTel, goodsDespribe;
+    private String goodsName, goodsPrice, goodsDespribe;
 
     // 发布按钮
     private Button publishBtn;
@@ -113,7 +111,6 @@ public class AddFragment extends Fragment {
 //        pic = view.findViewById(R.id.goods_pic); // todo
         name = view.findViewById(R.id.goods_name);
         price = view.findViewById(R.id.goods_price);
-        tel = view.findViewById(R.id.goods_tel);
         describe = view.findViewById(R.id.goods_describe);
         publishBtn = view.findViewById(R.id.btn_new_publish);
         init();
@@ -133,12 +130,6 @@ public class AddFragment extends Fragment {
                 } else if (TextUtils.isEmpty(goodsPrice)) {
                     Toast.makeText(getActivity(), "请输入物品价格", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (TextUtils.isEmpty(goodsTel)) {
-                    Toast.makeText(getActivity(), "请输入联系方式", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (!goodsTel.matches(telRegex)) {
-                    Toast.makeText(getActivity(), "电话号码格式错误，请重新输入", Toast.LENGTH_SHORT).show();
-                    return;
                 } else if (TextUtils.isEmpty(goodsDespribe)) {
                     Toast.makeText(getActivity(), "请输入商品描述", Toast.LENGTH_SHORT).show();
                     return;
@@ -153,7 +144,6 @@ public class AddFragment extends Fragment {
     private void getEditString() {
         goodsName = name.getText().toString().trim();
         goodsPrice = price.getText().toString().trim();
-        goodsTel = tel.getText().toString().trim();
         goodsDespribe = describe.getText().toString().trim();
     }
 

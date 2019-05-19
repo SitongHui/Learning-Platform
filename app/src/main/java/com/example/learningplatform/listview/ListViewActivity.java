@@ -34,7 +34,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class ListViewActivity extends Activity {
     private final String TAG = "ListViewActivity";
 
-    private ListView myPublishListView;
+    public ListView myPublishListView;
     // 返回按钮
     private Button myPublishReturnBtn;
 
@@ -49,11 +49,8 @@ public class ListViewActivity extends Activity {
 
         // 找到我的发布ListView
         myPublishListView = findViewById(R.id.lv_mypubulish);
-        myPublishListView.setAdapter(new MyPublishListAdapter(ListViewActivity.this, R.layout.mypublish_layout_list_item, goodsList));
-
-        searchData();
-
         adapter = new MyPublishListAdapter(ListViewActivity.this, R.layout.mypublish_layout_list_item, goodsList);
+        myPublishListView.setAdapter(adapter);
 
 
         myPublishReturnBtn = findViewById(R.id.btn_my_publish_return);
@@ -67,12 +64,14 @@ public class ListViewActivity extends Activity {
             }
         });
 
+        getMyGoodsData();
+
+
     }
 
 
-    private void searchData() {
+    private void getMyGoodsData() {
         int userId = Objects.requireNonNull(this).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
-//                getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
 
         String url = "http://" + Constancts.IP + "/lp/v1/goods?userId=" + userId;
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -97,9 +96,9 @@ public class ListViewActivity extends Activity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 //                Gson~~~
-                Log.d(TAG, "onResponse: " + response.body().string());
-
-//                applyData2Ui(response.body().string());
+//                Log.d(TAG, "onResponse: " + response.body().string());
+//
+                applyData2Ui(response.body().string());
             }
         });
     }
@@ -112,6 +111,7 @@ public class ListViewActivity extends Activity {
         myPublishListView.post(new Runnable() {
             @Override
             public void run() {
+
                 adapter.notifyDataSetChanged();
             }
         });

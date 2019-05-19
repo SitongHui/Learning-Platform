@@ -83,16 +83,6 @@
             android:inputType="number"/>
 
         <EditText
-            android:id="@+id/fix_goods_tel"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/border"
-            android:paddingLeft="5dp"
-            android:inputType="number"
-            android:hint="请输入联系方式"/>
-
-        <EditText
             android:id="@+id/fix_goods_describe"
             android:layout_width="match_parent"
             android:layout_height="100dp"

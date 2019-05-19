@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +16,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.learningplatform.BottomBarActivity;
+import com.example.learningplatform.Constancts;
 import com.example.learningplatform.FixMyPublishActivity;
 import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.R;
 import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.app.MyApp;
+import com.example.learningplatform.listview.ListViewActivity;
 
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import static com.example.learningplatform.R.layout.activity_goods_info;
 import static com.example.learningplatform.R.layout.mypublish_layout_list_item;
@@ -58,7 +73,7 @@ public class MyPublishListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) { // 每行列表长得什么样子
+    public View getView(final int position, View convertView, ViewGroup parent) { // 每行列表长得什么样子
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.mypublish_layout_list_item, null);
@@ -80,6 +95,10 @@ public class MyPublishListAdapter extends BaseAdapter {
              public void onClick(View v) {
                  Context ctx = MyPublishListAdapter.this.mContext;
                  Intent intent = new Intent(ctx, FixMyPublishActivity.class);
+                 GoodsEntity.GoodsInfo goods = goodsList.get(position);
+                 Bundle bundle=new Bundle();
+                 bundle.putParcelable("goods", goods);
+                 intent.putExtras(bundle);
                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                  ctx.startActivity(intent);
              }
@@ -98,6 +117,8 @@ public class MyPublishListAdapter extends BaseAdapter {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                GoodsEntity.GoodsInfo goods = goodsList.get(position);
+                                deleteGoodsById(goods.getId());
                                 Toast.makeText(MyPublishListAdapter.this.mContext, "已删除", Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -112,4 +133,46 @@ public class MyPublishListAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    private void deleteGoodsById(final int id) {
+        String url = "http://"+ Constancts.IP +"/lp/v1/goods/" + id;
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
+        final Request request = new Request.Builder()
+                .url(url)
+                .delete()
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                goodsList.removeIf(new Predicate<GoodsEntity.GoodsInfo>() {
+                    @Override
+                    public boolean test(GoodsEntity.GoodsInfo goodsInfo) {
+                        return goodsInfo.getId() == id;
+                    }
+                });
+
+                System.out.print(0);
+
+                new Runnable(){
+                    @Override
+                    public void run() {
+                        MyPublishListAdapter.this.notifyDataSetChanged();
+                    }
+                };
+            }
+        });
+    }
+
+
 }

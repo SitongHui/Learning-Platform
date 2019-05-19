@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.listview.ListViewActivity;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -36,8 +37,6 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
     private EditText fixName;
     // 商品价格
     private EditText fixPrice;
-    // 联系方式
-    private EditText fixTel;
     // 商品描述
     private EditText fixDescribe;
 
@@ -79,7 +78,6 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
 //        fixPic = findViewById(R.id.fix_goods_pic); // todo
         fixName = findViewById(R.id.fix_goods_name);
         fixPrice = findViewById(R.id.fix_goods_price);
-        fixTel = findViewById(R.id.fix_goods_tel);
         fixDescribe = findViewById(R.id.fix_goods_describe);
         fixPublishBtn = findViewById(R.id.btn_fix_publish);
         fixGoodsInfoReturnBtn = findViewById(R.id.fix_goods_info_return);
@@ -91,12 +89,12 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
                 startActivity(intent);
             }
         });
+        GoodsEntity.GoodsInfo goodsInfo = (GoodsEntity.GoodsInfo) getIntent().getExtras().get("goods");
 
         // 根据物品信息赋值
-        fixName.setText("《物联网工程》");
-        fixPrice.setText("10");
-        fixTel.setText("18829213052");
-        fixDescribe.setText("本书是物联网工程的专业课书籍");
+        fixName.setText(goodsInfo.getName());
+        fixPrice.setText(goodsInfo.getPrice() + "元");
+        fixDescribe.setText(goodsInfo.getDescription());
 
         init();
     }
@@ -116,12 +114,6 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
                 } else if (TextUtils.isEmpty(fixGoodsPrice)) {
                     Toast.makeText(FixMyPublishActivity.this, "请输入物品价格", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (TextUtils.isEmpty(fixGoodsTel)) {
-                    Toast.makeText(FixMyPublishActivity.this, "请输入联系方式", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (!fixGoodsTel.matches(telRegex)) {
-                    Toast.makeText(FixMyPublishActivity.this, "电话号码格式错误，请重新输入", Toast.LENGTH_SHORT).show();
-                    return;
                 } else if (TextUtils.isEmpty(fixGoodsDespribe)) {
                     Toast.makeText(FixMyPublishActivity.this, "请输入商品描述", Toast.LENGTH_SHORT).show();
                     return;
@@ -139,7 +131,6 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
     private void getEditString() {
         fixGoodsName = fixName.getText().toString().trim();
         fixGoodsPrice = fixPrice.getText().toString().trim();
-        fixGoodsTel = fixTel.getText().toString().trim();
         fixGoodsDespribe = fixDescribe.getText().toString().trim();
     }
 

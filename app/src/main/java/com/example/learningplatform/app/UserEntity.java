@@ -1,11 +1,7 @@
 package com.example.learningplatform.app;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.List;
-
 public class UserEntity {
+
 
     /**
      * status : success
@@ -13,9 +9,7 @@ public class UserEntity {
      */
 
     private String status;
-    private List<UserEntity> data;
-    public UserEntity() {}
-
+    private DataBean data;
 
     public String getStatus() {
         return status;
@@ -25,11 +19,11 @@ public class UserEntity {
         this.status = status;
     }
 
-    public List<UserEntity> getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(List<UserEntity> data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
@@ -44,34 +38,13 @@ public class UserEntity {
          * department : 计算机学院
          */
 
-        private int id = -1;
-        private String username = "";
+        private int id;
+        private String username;
         private String avatar;
         private String gender;
         private String phone;
         private String password;
         private String department;
-//        public UserInfo(){}
-//        protected UserInfo(Parcel in) {
-//            id = in.readInt();
-//            username = in.readString();
-//            avatar = in.readString();
-//            gender = in.readString();
-//            password = in.readString();
-//            department = in.readString();
-//        }
-//
-//        public static final Parcelable.Creator<UserInfo> CREATOR = new Parcelable.Creator<UserInfo>() {
-//            @Override
-//            public UserInfo createFromParcel(Parcel in) {
-//                return new UserInfo(in);
-//            }
-//
-//            @Override
-//            public UserInfo[] newArray(int size) {
-//                return new UserInfo[size];
-//            }
-//        };
 
         public int getId() {
             return id;

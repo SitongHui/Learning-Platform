@@ -1,11 +1,14 @@
 package com.example.learningplatform.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,22 +26,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.learningplatform.Constancts;
 import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.FixUserInfoActivity;
 import com.example.learningplatform.MainActivity;
 import com.example.learningplatform.R;
+import com.example.learningplatform.app.GoodsEntity;
+import com.example.learningplatform.app.UserEntity;
 import com.example.learningplatform.listview.ListViewActivity;
+import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import static android.app.Activity.RESULT_OK;
 
 public class UserFragment extends Fragment {
+    private final String USER_TAG = "HomeFragment";
+
 
     // 用户个人信息
     private TextView userName;
@@ -54,6 +71,24 @@ public class UserFragment extends Fragment {
     private Button btnFixPwdBtn;
     // 退出按钮
     private Button loginOutBtn;
+
+    private UserEntity.DataBean userInfo = new UserEntity.DataBean();
+
+    private  Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    UserEntity.DataBean userInfo = (UserEntity.DataBean) msg.obj;
+                    userName.setText(userInfo.getUsername());
+                    userPhone.setText(userInfo.getPhone());
+                    userSchoolName.setText(userInfo.getDepartment());
+                    userSex.setText(userInfo.getGender());
+            }
+        }
+    };
+
 
 
     // 修改头像
@@ -95,10 +130,8 @@ public class UserFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getUserData();
 
-//        userInfo user = new userInfo();
-//        user.setUserName("惠惠");
-//        user.setTelephone("13659113748");
 
         // 给用户信息赋值
         userName = view.findViewById(R.id.user_name);
@@ -159,6 +192,48 @@ public class UserFragment extends Fragment {
 
     }
 
+    private void getUserData() {
+//        getEditString();
+        int userId = Objects.requireNonNull(getActivity()).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
+
+        String url = "http://"+ Constancts.IP +"/lp/v1/user/" + userId;
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        Log.v(USER_TAG,message);
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()//默认就是GET请求，可以不写
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(USER_TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+//                Gson~~~
+                applyData2Ui(response.body().string());
+            }
+        });
+    }
+
+    private void applyData2Ui(String result) {
+        Gson gson = new Gson();
+        UserEntity userEntity = gson.fromJson(result, UserEntity.class);
+        userInfo = userEntity.getData();
+        // 主线程刷新视图
+        Message msg = new Message();
+        msg.what = 0;
+        msg.obj = userInfo;
+        handler.sendMessage(msg);
+    }
 
 
     @Override

@@ -1,9 +1,13 @@
 package com.example.learningplatform;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,8 +15,22 @@ import android.widget.Toast;
 
 import com.example.learningplatform.app.Goods;
 import com.example.learningplatform.app.GoodsEntity;
+import com.example.learningplatform.app.UserEntity;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class GoodsInfoActivity extends Activity {
+    private final String TAG = "HomeFragment";
+
 
     // 拨号按钮
     private Button dial;
@@ -25,12 +43,25 @@ public class GoodsInfoActivity extends Activity {
     // 展示联系电话
     private TextView showGoodsTel;
 
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    UserEntity.DataBean userInfo = (UserEntity.DataBean) msg.obj;
+                    showGoodsTel.setText(userInfo.getPhone());
+            }
+        }
+    };
+
     // 返回按钮
     private Button goodsInfoReturnBtn;
     private GoodsEntity.GoodsInfo goods = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getUserData();
         setContentView(R.layout.activity_goods_info);
         goods = (GoodsEntity.GoodsInfo) getIntent().getExtras().get("goods");
         // 返回按钮
@@ -55,8 +86,6 @@ public class GoodsInfoActivity extends Activity {
         showGoodsPrice.setText(goods.getPrice() + "元");
         showGoodsDescribe.setText(goods.getDescription());
 
-        showGoodsTel.setText("15291020570");// todo
-
         dial = findViewById(R.id.btn_dial);
         dial.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,5 +96,47 @@ public class GoodsInfoActivity extends Activity {
             }
         });
 
+    }
+
+    private void getUserData() {
+        goods = (GoodsEntity.GoodsInfo) getIntent().getExtras().get("goods");
+        int ownerId = goods.getOwnerId();
+        String url = "http://"+ Constancts.IP +"/lp/v1/user/" + ownerId;
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                        Log.v(TAG,message);
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()//默认就是GET请求，可以不写
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+//                Gson~~~
+                applyData2Ui(response.body().string());
+            }
+        });
+    }
+
+    private void applyData2Ui(String result) {
+        Gson gson = new Gson();
+        UserEntity userEntity = gson.fromJson(result, UserEntity.class);
+        UserEntity.DataBean userInfo = userEntity.getData();
+        // 主线程刷新视图
+        Message msg = new Message();
+        msg.what = 0;
+        msg.obj = userInfo;
+        handler.sendMessage(msg);
     }
 }

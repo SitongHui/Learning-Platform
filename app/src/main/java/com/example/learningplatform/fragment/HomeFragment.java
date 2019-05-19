@@ -35,7 +35,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class HomeFragment extends Fragment {
 
-    private final String TAG = "HomeFragment";// 随意叫什么名字，只是为了logcat方便过滤
+    private final String TAG = "HomeFragment";
 
     private EditText searchEditText;
     private RecyclerView mRecyclerView;
