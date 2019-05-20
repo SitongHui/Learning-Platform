@@ -24,15 +24,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.learningplatform.BottomBarActivity;
 import com.example.learningplatform.Constancts;
-import com.example.learningplatform.FixPwdActivity;
-import com.example.learningplatform.MainActivity;
 import com.example.learningplatform.R;
-import com.example.learningplatform.RegisterActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +41,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -83,7 +78,6 @@ public class AddFragment extends Fragment {
     Button addGallery;
     Unbinder unbinder;
 
-
     private static final int CODE_GALLERY_REQUEST = 0xa0;
     private static final int CODE_CAMERA_REQUEST = 0xa1;
     private static final int CODE_RESULT_REQUEST = 0xa2;
@@ -110,7 +104,6 @@ public class AddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-
 
         name = view.findViewById(R.id.goods_name);
         price = view.findViewById(R.id.goods_price);
@@ -197,7 +190,6 @@ public class AddFragment extends Fragment {
             }
         });
     }
-
 
 
     // 打开相机及打开相册操作

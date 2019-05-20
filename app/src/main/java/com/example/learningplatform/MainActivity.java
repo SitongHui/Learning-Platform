@@ -15,11 +15,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.learningplatform.app.LoginEntity;
-import com.example.learningplatform.listview.ListViewActivity;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,22 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
     private String loginName, pwd;
 
-    private Button Btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Btn = findViewById(R.id.btn);
-        Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 跳转到个人页面
-                Intent intent = new Intent(MainActivity.this, BottomBarActivity.class);
-                startActivity(intent);
-            }
-        });
 
         login = findViewById(R.id.login);
         password = findViewById(R.id.password);

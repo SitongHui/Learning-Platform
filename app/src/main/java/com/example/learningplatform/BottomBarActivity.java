@@ -157,5 +157,4 @@ public class BottomBarActivity extends AppCompatActivity implements View.OnClick
         transaction.commit();
     }
 
-
 }

@@ -1,7 +1,6 @@
 package com.example.learningplatform;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,14 +20,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.listview.ListViewActivity;
 import com.example.learningplatform.utils.FileUtils;
-import com.example.learningplatform.views.MyImageView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
@@ -85,8 +82,6 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
     private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
     private Uri imageUri;
     private Uri cropImageUri;
-
-
 
 
     @Override
@@ -342,6 +337,5 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
     }
-
 
 }

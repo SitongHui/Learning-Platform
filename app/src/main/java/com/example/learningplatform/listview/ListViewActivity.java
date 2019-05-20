@@ -8,19 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.learningplatform.BottomBarActivity;
 import com.example.learningplatform.Constancts;
-import com.example.learningplatform.GoodsInfoActivity;
 import com.example.learningplatform.R;
 import com.example.learningplatform.app.GoodsEntity;
-import com.example.learningplatform.fragment.LinearAdapter;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -176,7 +171,6 @@ public class ListViewActivity extends Activity {
         myPublishListView.post(new Runnable() {
             @Override
             public void run() {
-
                 adapter.notifyDataSetChanged();
             }
         });

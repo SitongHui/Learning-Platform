@@ -23,18 +23,6 @@
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/hello"/>
-            <Button
-                android:id="@+id/takePic"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:text="拍照"
-                android:layout_marginTop="15dp"/>
-
-            <Button
-                android:id="@+id/gallery"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:text="相册"/>
 
         </LinearLayout>
 
@@ -132,6 +120,5 @@
         </Button>
 
     </LinearLayout>
-
 
 </RelativeLayout>

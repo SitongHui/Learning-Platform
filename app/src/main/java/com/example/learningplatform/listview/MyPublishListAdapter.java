@@ -1,46 +1,21 @@
 package com.example.learningplatform.listview;
 
-import android.app.AlertDialog;
-import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.learningplatform.BottomBarActivity;
-import com.example.learningplatform.Constancts;
 import com.example.learningplatform.FixMyPublishActivity;
-import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.R;
 import com.example.learningplatform.app.GoodsEntity;
-import com.example.learningplatform.app.MyApp;
-import com.example.learningplatform.listview.ListViewActivity;
-import com.example.learningplatform.views.MyImageView;
 
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Predicate;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-
-import static com.example.learningplatform.R.layout.activity_goods_info;
-import static com.example.learningplatform.R.layout.mypublish_layout_list_item;
 
 public class MyPublishListAdapter extends BaseAdapter {
 

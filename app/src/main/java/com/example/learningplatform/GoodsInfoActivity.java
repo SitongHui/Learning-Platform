@@ -1,7 +1,6 @@
 package com.example.learningplatform;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,17 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.learningplatform.app.Goods;
 import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.app.UserEntity;
-import com.example.learningplatform.views.MyImageView;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -90,8 +85,6 @@ public class GoodsInfoActivity extends Activity {
         showGoodsName.setText(goods.getName());
         showGoodsPrice.setText(goods.getPrice() + "元");
         showGoodsDescribe.setText(goods.getDescription());
-
-        Log.v("zhanghz","url--"+goods.getFaceUrl());
         Glide.with(this).load(goods.getFaceUrl()).placeholder(R.drawable.purple).into(showGoodsPic);
 
         dial = findViewById(R.id.btn_dial);
@@ -132,7 +125,6 @@ public class GoodsInfoActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                Gson~~~
                 applyData2Ui(response.body().string());
             }
         });

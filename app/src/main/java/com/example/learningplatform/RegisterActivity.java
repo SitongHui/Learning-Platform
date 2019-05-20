@@ -13,13 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.learningplatform.app.Goods;
-import com.example.learningplatform.app.userInfo;
-
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -33,7 +27,6 @@ import okhttp3.Response;
 public class RegisterActivity extends AppCompatActivity {
 
     private final String TAG = "RegisterActivity";
-//    private List<userInfo> userInfo = new ArrayList<>();
 
     // 用户名
     private EditText name;
@@ -132,7 +125,6 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
                 }
-
             }
         });
     }

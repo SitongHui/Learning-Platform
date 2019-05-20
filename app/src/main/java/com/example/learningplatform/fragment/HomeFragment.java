@@ -109,7 +109,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                Gson~~~
                 applyData2Ui(response.body().string());
             }
         });
@@ -139,7 +138,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                Gson~~~
                 applyData2Ui(response.body().string());
             }
         });
@@ -181,7 +179,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // 设置搜索图片大小
-        searchEditText = view.findViewById(R.id.search); // todo 赋值
+        searchEditText = view.findViewById(R.id.search);
     }
 
     // RecyclerView分隔线
