@@ -41,6 +41,13 @@
             android:background="@drawable/book"
             android:layout_gravity="center" />
 
+        <!--<com.example.learningplatform.views.MyImageView-->
+            <!--android:id="@+id/my_goods_pic"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:scaleType="centerCrop"/>-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

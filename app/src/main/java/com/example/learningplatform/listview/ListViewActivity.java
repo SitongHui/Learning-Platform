@@ -2,6 +2,7 @@ package com.example.learningplatform.listview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,8 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.learningplatform.BottomBarActivity;
 import com.example.learningplatform.Constancts;
 import com.example.learningplatform.GoodsInfoActivity;
@@ -23,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -52,6 +57,12 @@ public class ListViewActivity extends Activity {
         adapter = new MyPublishListAdapter(ListViewActivity.this, R.layout.mypublish_layout_list_item, goodsList);
         myPublishListView.setAdapter(adapter);
 
+        adapter.setOnItemDeleteListener(new MyPublishListAdapter.onItemDeleteListener() {
+            @Override
+            public void onItemDelete(int pos) {
+                createAlert(pos);
+            }
+        });
 
         myPublishReturnBtn = findViewById(R.id.btn_my_publish_return);
         myPublishReturnBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +80,63 @@ public class ListViewActivity extends Activity {
 
     }
 
+    private void createAlert(final int pos) {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("警告")
+                .setMessage("确认删除本条发布信息?")
+                .setIcon(R.drawable.warning)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GoodsEntity.GoodsInfo goods = goodsList.get(pos);
+                        deleteGoodsById(goods.getId());
+                        Toast.makeText(ListViewActivity.this, "已删除", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(ListViewActivity.this, "已取消", Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
+    }
+
+    private void deleteGoodsById(final int id) {
+        String url = "http://" + Constancts.IP + "/lp/v1/goods/" + id;
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String message) {
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
+        final Request request = new Request.Builder()
+                .url(url)
+                .delete()
+                .build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                goodsList.removeIf(new Predicate<GoodsEntity.GoodsInfo>() {
+                    @Override
+                    public boolean test(GoodsEntity.GoodsInfo goodsInfo) {
+                        return goodsInfo.getId() == id;
+                    }
+                });
+                myPublishListView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+    }
 
     private void getMyGoodsData() {
         int userId = Objects.requireNonNull(this).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
@@ -95,9 +163,6 @@ public class ListViewActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                Gson~~~
-//                Log.d(TAG, "onResponse: " + response.body().string());
-//
                 applyData2Ui(response.body().string());
             }
         });

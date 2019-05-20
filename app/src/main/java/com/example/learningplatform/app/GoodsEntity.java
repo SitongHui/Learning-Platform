@@ -58,6 +58,21 @@ public class GoodsEntity {
             price = in.readInt();
             description = in.readString();
             ownerId = in.readInt();
+            faceUrl=in.readString();
+        }
+
+        @Override
+        public String toString() {
+            return "GoodsInfo{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", price=" + price +
+                    ", createAt='" + createAt + '\'' +
+                    ", updateAt='" + updateAt + '\'' +
+                    ", faceUrl='" + faceUrl + '\'' +
+                    ", description='" + description + '\'' +
+                    ", ownerId=" + ownerId +
+                    '}';
         }
 
         public static final Creator<GoodsInfo> CREATOR = new Creator<GoodsInfo>() {
@@ -148,6 +163,7 @@ public class GoodsEntity {
             dest.writeInt(price);
             dest.writeString(description);
             dest.writeInt(ownerId);
+            dest.writeString(faceUrl);
         }
     }
 }

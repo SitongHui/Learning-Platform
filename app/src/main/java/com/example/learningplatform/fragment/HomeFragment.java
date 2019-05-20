@@ -148,6 +148,7 @@ public class HomeFragment extends Fragment {
     private void applyData2Ui(String result) {
         Gson gson = new Gson();
         GoodsEntity goodsEntity = gson.fromJson(result, GoodsEntity.class);
+        goodsList.clear();
         if (seachText == null) {
             // 主线程刷新视图
             goodsList.addAll(goodsEntity.getData());
@@ -159,7 +160,6 @@ public class HomeFragment extends Fragment {
             });
         } else {
             // 清空之前的数据
-            goodsList.clear();
             goodsList.addAll(goodsEntity.getData());
             // 主线程刷新视图
             mRecyclerView.post(new Runnable() {

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 
 
 public class PhotoUtils {
@@ -27,6 +28,7 @@ public class PhotoUtils {
         Intent intentCamera = new Intent();
         intentCamera.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         //将拍照结果保存至photo_file的Uri中，不保留在相册中
+        Log.v("TimeStamp", System.currentTimeMillis() + "");
         intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         fragment.startActivityForResult(intentCamera, requestCode);
     }

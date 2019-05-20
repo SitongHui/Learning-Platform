@@ -37,13 +37,21 @@
         android:orientation="vertical"
         android:padding="15dp">
 
-        <ImageView
+        <!--<ImageView-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="@drawable/book"-->
+            <!--android:layout_marginBottom="20dp"-->
+            <!--/>-->
+
+        <com.example.learningplatform.views.MyImageView
+            android:id="@+id/show_goods_detail_pic"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:background="@drawable/book"
             android:layout_marginBottom="20dp"
-            />
+            android:scaleType="centerCrop"/>
 
         <!--商品名称-->
         <LinearLayout

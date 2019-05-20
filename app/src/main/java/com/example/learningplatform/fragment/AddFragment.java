@@ -46,6 +46,8 @@ import butterknife.Unbinder;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -53,9 +55,9 @@ import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
+import com.example.learningplatform.utils.FileUtils;
+
 public class AddFragment extends Fragment {
-    // 商品图片
-//    private ImageView pic;
     // 商品名称
     private EditText name;
     // 商品价格
@@ -68,6 +70,8 @@ public class AddFragment extends Fragment {
     // 发布按钮
     private Button publishBtn;
 
+    // 图片地址
+    String mImgUri;
 
     // 修改头像
     private static final String TAG = "PhotoImageFragment";
@@ -108,7 +112,6 @@ public class AddFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
 
-//        pic = view.findViewById(R.id.goods_pic); // todo
         name = view.findViewById(R.id.goods_name);
         price = view.findViewById(R.id.goods_price);
         describe = view.findViewById(R.id.goods_describe);
@@ -134,7 +137,7 @@ public class AddFragment extends Fragment {
                     Toast.makeText(getActivity(), "请输入商品描述", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    postData();
+                    putData();
                 }
             }
         });
@@ -147,20 +150,22 @@ public class AddFragment extends Fragment {
         goodsDespribe = describe.getText().toString().trim();
     }
 
-    private void postData() {
+    private void putData() {
         getEditString();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10L, TimeUnit.SECONDS)
                 .build();
         int userId = Objects.requireNonNull(getActivity()).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
         String url = "http://"+ Constancts.IP+"/lp/v1/goods";
-        RequestBody requestBody = new FormBody.Builder()
-                .add("name", goodsName)
-                .add("price", goodsPrice)
-                .add("description", goodsDespribe)
-                .add("userId", userId+"")
-                .add("faceUrl", "")
-                .build();// todo 头像，电话（登录的用户电话） ownerid如何获取
+
+        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"),new File(this.mImgUri));
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)//上传图片格式一般都是这个格式MediaType.parse("multipart/form-data")
+                .addFormDataPart("name", goodsName)
+                .addFormDataPart("price", goodsPrice)
+                .addFormDataPart("description", goodsDespribe)
+                .addFormDataPart("userId", userId+"")
+                .addFormDataPart("faceUrl","faceImage.jpg", fileBody).build();//图片服务器定义名字，
 
         Request request = new Request.Builder()
                 .url(url)
@@ -248,6 +253,7 @@ public class AddFragment extends Fragment {
                     //通过FileProvider创建一个content类型的Uri
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         imageUri = FileProvider.getUriForFile(getActivity(), "com.zz.fileprovider", fileUri);
+                        Log.v("a", "b");
                     }
                     PhotoUtils.takePicture(this, imageUri, CODE_CAMERA_REQUEST);
                 } else {
@@ -315,6 +321,7 @@ public class AddFragment extends Fragment {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         newUri = FileProvider.getUriForFile(getActivity(), "com.zz.fileprovider", new File(newUri.getPath()));
                     }
+                    this.mImgUri = FileUtils.getRealPathFromUri(getActivity(), data.getData());
                     PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
                 } else {
                     ToastUtils.showShort(getActivity(), "设备没有SD卡！");
@@ -324,6 +331,7 @@ public class AddFragment extends Fragment {
             case CODE_RESULT_REQUEST:
                 Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, getActivity());
                 if (bitmap != null) {
+                    this.mImgUri = FileUtils.getRealPathFromUri(getActivity(),cropImageUri);
                     showImages(bitmap);
                 }
                 break;

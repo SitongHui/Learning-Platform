@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.learningplatform.BottomBarActivity;
 import com.example.learningplatform.Constancts;
 import com.example.learningplatform.FixMyPublishActivity;
@@ -23,6 +24,7 @@ import com.example.learningplatform.R;
 import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.app.MyApp;
 import com.example.learningplatform.listview.ListViewActivity;
+import com.example.learningplatform.views.MyImageView;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -45,7 +47,13 @@ public class MyPublishListAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<GoodsEntity.GoodsInfo> goodsList;
-
+    public interface onItemDeleteListener{
+        public void onItemDelete(int pos);
+    }
+    private onItemDeleteListener listener;
+    public void setOnItemDeleteListener(onItemDeleteListener listener){
+        this.listener=listener;
+    }
     public MyPublishListAdapter(Context context, int resource, List<GoodsEntity.GoodsInfo> goodsList) {
         this.mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -68,7 +76,7 @@ public class MyPublishListAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        public ImageView imageView;
+        public ImageView showBookImage;
         public TextView tvTitle, btnFix, btnDel;
     }
 
@@ -78,7 +86,7 @@ public class MyPublishListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.mypublish_layout_list_item, null);
             holder = new ViewHolder();
-            holder.imageView = convertView.findViewById(R.id.iv);
+            holder.showBookImage = convertView.findViewById(R.id.my_publish_goods_pic);
             holder.tvTitle = convertView.findViewById(R.id.tv_title);
             holder.btnFix = convertView.findViewById(R.id.btn_fix);
             holder.btnDel = convertView.findViewById(R.id.btn_del);
@@ -88,6 +96,7 @@ public class MyPublishListAdapter extends BaseAdapter {
         }
         //  给控件赋值
         holder.tvTitle.setText(goodsList.get(position).getName());
+        Glide.with(mContext).load(goodsList.get(position).getFaceUrl()).placeholder(R.drawable.purple).into(holder.showBookImage);
 
         // 修改按钮进入修改已发布的商品页面
          holder.btnFix.setOnClickListener(new View.OnClickListener() {
@@ -108,71 +117,12 @@ public class MyPublishListAdapter extends BaseAdapter {
         holder.btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context ctx = MyPublishListAdapter.this.mContext;
+                listener.onItemDelete(position);
 
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(ctx);
-                builder.setTitle("警告")
-                        .setMessage("确认删除本条发布信息?")
-                        .setIcon(R.drawable.warning)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                GoodsEntity.GoodsInfo goods = goodsList.get(position);
-                                deleteGoodsById(goods.getId());
-                                Toast.makeText(MyPublishListAdapter.this.mContext, "已删除", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MyPublishListAdapter.this.mContext, "已取消", Toast.LENGTH_SHORT).show();
-                            }
-                        }).show();
             }
         });
 
         return convertView;
     }
-
-    private void deleteGoodsById(final int id) {
-        String url = "http://"+ Constancts.IP +"/lp/v1/goods/" + id;
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                    @Override
-                    public void log(String message) {
-                    }
-                }).setLevel(HttpLoggingInterceptor.Level.BODY))
-                .build();
-        final Request request = new Request.Builder()
-                .url(url)
-                .delete()
-                .build();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                goodsList.removeIf(new Predicate<GoodsEntity.GoodsInfo>() {
-                    @Override
-                    public boolean test(GoodsEntity.GoodsInfo goodsInfo) {
-                        return goodsInfo.getId() == id;
-                    }
-                });
-
-                System.out.print(0);
-
-                new Runnable(){
-                    @Override
-                    public void run() {
-                        MyPublishListAdapter.this.notifyDataSetChanged();
-                    }
-                };
-            }
-        });
-    }
-
 
 }

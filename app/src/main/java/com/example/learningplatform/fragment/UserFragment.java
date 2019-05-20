@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -26,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.learningplatform.BottomBarActivity;
 import com.example.learningplatform.Constancts;
 import com.example.learningplatform.FixPwdActivity;
 import com.example.learningplatform.FixUserInfoActivity;
@@ -34,11 +37,13 @@ import com.example.learningplatform.R;
 import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.app.UserEntity;
 import com.example.learningplatform.listview.ListViewActivity;
+import com.example.learningplatform.utils.FileUtils;
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,8 +51,11 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -62,6 +70,8 @@ public class UserFragment extends Fragment {
     private TextView userPhone;
     private TextView userSchoolName;
     private TextView userSex;
+    // 图片地址
+    String mImgUri;
 
     // 声明我的发布按钮
     private Button publishBtn;
@@ -74,6 +84,17 @@ public class UserFragment extends Fragment {
 
     private UserEntity.DataBean userInfo = new UserEntity.DataBean();
 
+
+    // 修改头像
+    private static final String TAG = "PhotoImageFragment";
+    @BindView(R.id.photo)
+    ImageView photo;
+    @BindView(R.id.takePic)
+    Button takePic;
+    @BindView(R.id.gallery)
+    Button gallery;
+    Unbinder unbinder;
+
     private  Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -85,21 +106,10 @@ public class UserFragment extends Fragment {
                     userPhone.setText(userInfo.getPhone());
                     userSchoolName.setText(userInfo.getDepartment());
                     userSex.setText(userInfo.getGender());
+                    Glide.with(getActivity()).load(userInfo.getAvatar()).placeholder(R.drawable.hello).into(photo);
             }
         }
     };
-
-
-
-    // 修改头像
-    private static final String TAG = "PhotoImageFragment";
-    @BindView(R.id.photo)
-    ImageView photo;
-    @BindView(R.id.takePic)
-    Button takePic;
-    @BindView(R.id.gallery)
-    Button gallery;
-    Unbinder unbinder;
 
 
     private static final int CODE_GALLERY_REQUEST = 0xa0;
@@ -355,6 +365,7 @@ public class UserFragment extends Fragment {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         newUri = FileProvider.getUriForFile(getActivity(), "com.zz.fileprovider", new File(newUri.getPath()));
                     }
+                    this.mImgUri = FileUtils.getRealPathFromUri(getActivity(), data.getData());
                     PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
                 } else {
                     ToastUtils.showShort(getActivity(), "设备没有SD卡！");
@@ -364,6 +375,7 @@ public class UserFragment extends Fragment {
             case CODE_RESULT_REQUEST:
                 Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, getActivity());
                 if (bitmap != null) {
+                    this.mImgUri = FileUtils.getRealPathFromUri(getActivity(), cropImageUri);
                     showImages(bitmap);
                 }
                 break;
@@ -373,6 +385,8 @@ public class UserFragment extends Fragment {
 
     private void showImages(Bitmap bitmap) {
         photo.setImageBitmap(bitmap);
+        // 上传头像
+        fixAvatar();
     }
 
     /**
@@ -381,6 +395,48 @@ public class UserFragment extends Fragment {
     public static boolean hasSdcard() {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
+    }
+
+    public void fixAvatar() {
+        int userId = Objects.requireNonNull(getActivity()).getSharedPreferences(Constancts.OWNERID, Context.MODE_PRIVATE).getInt("userId", -1);
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        String url = "http://" + Constancts.IP + "/lp/v1/user/" + userId;
+
+        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"),new File(this.mImgUri));
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("avatar","faceImage.jpg", fileBody)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .put(requestBody)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.code() == 200) {
+                    // 发布成功，跳转到主页
+                    Intent intent = new Intent(getActivity(), BottomBarActivity.class);
+                    Looper.prepare();
+                    Toast.makeText(getActivity(), "修改成功", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    Looper.loop();
+
+                } else if (response.code() == 500) {
+                    Looper.prepare();
+                    Toast.makeText(getContext(), "修改失败，请重新修改", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+        });
     }
 
 }

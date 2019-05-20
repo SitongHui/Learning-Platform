@@ -1,12 +1,14 @@
 package com.example.learningplatform;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +16,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,18 +24,32 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.listview.ListViewActivity;
+import com.example.learningplatform.utils.FileUtils;
+import com.example.learningplatform.views.MyImageView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class FixMyPublishActivity extends AppCompatActivity implements View.OnClickListener {
-    // 商品图片
-//    private ImageView fixPic;
+
     // 商品名称
     private EditText fixName;
     // 商品价格
@@ -40,13 +57,16 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
     // 商品描述
     private EditText fixDescribe;
 
-    private String fixGoodsName, fixGoodsPrice, fixGoodsTel, fixGoodsDespribe;
+    private String fixGoodsName, fixGoodsPrice, fixGoodsDespribe;
 
     // 发布按钮
     private Button fixPublishBtn;
 
     // 返回按钮
     private Button fixGoodsInfoReturnBtn;
+
+    // 图片地址
+    String mImgUri;
 
     // 书籍图像
     private static final String TAG = "MainActivity";
@@ -75,7 +95,6 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_fix_my_publish);
         ViewUtils.inject(this);
 
-//        fixPic = findViewById(R.id.fix_goods_pic); // todo
         fixName = findViewById(R.id.fix_goods_name);
         fixPrice = findViewById(R.id.fix_goods_price);
         fixDescribe = findViewById(R.id.fix_goods_describe);
@@ -93,8 +112,9 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
 
         // 根据物品信息赋值
         fixName.setText(goodsInfo.getName());
-        fixPrice.setText(goodsInfo.getPrice() + "元");
+        fixPrice.setText(goodsInfo.getPrice() + "");
         fixDescribe.setText(goodsInfo.getDescription());
+        Glide.with(this).load(goodsInfo.getFaceUrl()).placeholder(R.drawable.purple).into(myGoodsPic);
 
         init();
     }
@@ -118,10 +138,7 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(FixMyPublishActivity.this, "请输入商品描述", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    // 发布成功，跳转到主页
-                    Intent intent = new Intent(FixMyPublishActivity.this, BottomBarActivity.class);
-                    Toast.makeText(FixMyPublishActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
+                    fixData();
                 }
             }
         });
@@ -132,6 +149,53 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
         fixGoodsName = fixName.getText().toString().trim();
         fixGoodsPrice = fixPrice.getText().toString().trim();
         fixGoodsDespribe = fixDescribe.getText().toString().trim();
+    }
+
+    private void fixData() {
+        GoodsEntity.GoodsInfo goodsInfo = (GoodsEntity.GoodsInfo) getIntent().getExtras().get("goods");
+        int id = goodsInfo.getId();
+
+        getEditString();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        String url = "http://" + Constancts.IP + "/lp/v1/goods/" + id;
+        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"),new File(this.mImgUri));
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("name", fixGoodsName)
+                .addFormDataPart("price", fixGoodsPrice)
+                .addFormDataPart("description", fixGoodsDespribe)
+                .addFormDataPart("faceUrl","faceImage.jpg", fileBody)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .put(requestBody)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG, "onFailure: "+e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, "onResponse: " + response.message().toString());
+                if(response.code() == 200) {
+                    // 发布成功，跳转到主页
+                    Intent intent = new Intent(FixMyPublishActivity.this, BottomBarActivity.class);
+                    Looper.prepare();
+                    Toast.makeText(FixMyPublishActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    Looper.loop();
+
+                } else if (response.code() == 500) {
+                    Looper.prepare();
+                    Toast.makeText(FixMyPublishActivity.this, "修改失败，请重新输入", Toast.LENGTH_SHORT).show();
+                    Looper.loop();
+                }
+            }
+        });
     }
 
 
@@ -235,6 +299,7 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             newUri = FileProvider.getUriForFile(this, "com.zz.fileprovider", new File(newUri.getPath()));
                         }
+                        this.mImgUri = FileUtils.getRealPathFromUri(FixMyPublishActivity.this, data.getData());
                         PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1, OUTPUT_X, OUTPUT_Y, CODE_RESULT_REQUEST);
                     } else {
                         ToastUtils.showShort(this, "设备没有SD卡！");
@@ -243,6 +308,7 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
                 case CODE_RESULT_REQUEST:
                     Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, this);
                     if (bitmap != null) {
+                        this.mImgUri = FileUtils.getRealPathFromUri(FixMyPublishActivity.this,cropImageUri);
                         showImages(bitmap);
                     }
                     break;

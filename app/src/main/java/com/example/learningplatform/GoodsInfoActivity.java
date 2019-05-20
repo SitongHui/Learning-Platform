@@ -10,12 +10,15 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.learningplatform.app.Goods;
 import com.example.learningplatform.app.GoodsEntity;
 import com.example.learningplatform.app.UserEntity;
+import com.example.learningplatform.views.MyImageView;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -31,7 +34,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class GoodsInfoActivity extends Activity {
     private final String TAG = "HomeFragment";
 
-
     // 拨号按钮
     private Button dial;
     // 展示商品名称
@@ -42,6 +44,8 @@ public class GoodsInfoActivity extends Activity {
     private TextView showGoodsDescribe;
     // 展示联系电话
     private TextView showGoodsTel;
+    // 展示商品图片
+    private ImageView showGoodsPic;
 
     private Handler handler = new Handler(){
         @Override
@@ -81,10 +85,14 @@ public class GoodsInfoActivity extends Activity {
         showGoodsPrice = findViewById(R.id.show_goods_price);
         showGoodsDescribe = findViewById(R.id.show_goods_describe);
         showGoodsTel = findViewById(R.id.show_goods_tel);
+        showGoodsPic = findViewById(R.id.show_goods_detail_pic);
 
         showGoodsName.setText(goods.getName());
         showGoodsPrice.setText(goods.getPrice() + "元");
         showGoodsDescribe.setText(goods.getDescription());
+
+        Log.v("zhanghz","url--"+goods.getFaceUrl());
+        Glide.with(this).load(goods.getFaceUrl()).placeholder(R.drawable.purple).into(showGoodsPic);
 
         dial = findViewById(R.id.btn_dial);
         dial.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +103,7 @@ public class GoodsInfoActivity extends Activity {
                 startActivity(Intent);
             }
         });
+
 
     }
 
