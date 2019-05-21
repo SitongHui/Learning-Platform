@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.learningplatform.BottomBarActivity;
@@ -37,6 +38,8 @@ public class ListViewActivity extends Activity {
     public ListView myPublishListView;
     // 返回按钮
     private Button myPublishReturnBtn;
+    // 返回为空值时
+    private TextView emptyList;
 
     private List<GoodsEntity.GoodsInfo> goodsList = new ArrayList<>();
     private MyPublishListAdapter adapter = null;
@@ -46,6 +49,7 @@ public class ListViewActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypublish_listview);
+        emptyList = findViewById(R.id.empty_my_publish);
 
         // 找到我的发布ListView
         myPublishListView = findViewById(R.id.lv_mypubulish);
@@ -71,8 +75,6 @@ public class ListViewActivity extends Activity {
         });
 
         getMyGoodsData();
-
-
     }
 
     private void createAlert(final int pos) {
@@ -171,7 +173,17 @@ public class ListViewActivity extends Activity {
         myPublishListView.post(new Runnable() {
             @Override
             public void run() {
-                adapter.notifyDataSetChanged();
+                int data = goodsList.size();
+                if (data == 0) {
+                    emptyList.setVisibility(View.VISIBLE);
+                    myPublishListView.setVisibility(View.GONE);
+                }
+                else {
+                    emptyList.setVisibility(View.GONE);
+                    myPublishListView.setVisibility(View.VISIBLE);
+                    adapter.notifyDataSetChanged();
+                }
+
             }
         });
     }

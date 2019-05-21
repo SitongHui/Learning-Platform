@@ -109,6 +109,12 @@ public class AddFragment extends Fragment {
         price = view.findViewById(R.id.goods_price);
         describe = view.findViewById(R.id.goods_describe);
         publishBtn = view.findViewById(R.id.btn_new_publish);
+
+        // 清空上次的发布状态
+        name.setText("");
+        price.setText("");
+        describe.setText("");
+
         init();
     }
 

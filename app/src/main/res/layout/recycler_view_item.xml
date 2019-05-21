@@ -37,7 +37,8 @@
                 android:gravity="left"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="11121111111"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="#6e6b6b"/>
 
         </LinearLayout>
@@ -62,7 +63,6 @@
                 android:gravity="left"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="111"
                 android:textColor="#6e6b6b"/>
 
         </LinearLayout>
@@ -87,7 +87,6 @@
                 android:gravity="left"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="111"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="#6e6b6b"/>

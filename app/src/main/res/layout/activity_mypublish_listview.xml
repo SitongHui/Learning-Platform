@@ -30,8 +30,18 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/empty_my_publish"
+        android:visibility="gone"
+        android:text="你还没有任何发布哦！"
+        android:textSize="26dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <ListView
         android:padding="15dp"
+        android:visibility="gone"
         android:id="@+id/lv_mypubulish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
