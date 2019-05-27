@@ -128,6 +128,7 @@ public class UserFragment extends Fragment {
                 // 跳转到个人信息页面
                 Intent intent = new Intent(getActivity(), FixUserInfoActivity.class);
                 intent.putExtra("avatar", userInfo.getAvatar());
+                intent.putExtra("gender", userInfo.getGender());
                 startActivity(intent);
             }
         });

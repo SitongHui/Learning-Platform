@@ -153,14 +153,26 @@ public class FixMyPublishActivity extends AppCompatActivity implements View.OnCl
         getEditString();
         OkHttpClient okHttpClient = new OkHttpClient();
         String url = "http://" + Constancts.IP + "/lp/v1/goods/" + id;
-        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"),new File(this.mImgUri));
-        MultipartBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("name", fixGoodsName)
-                .addFormDataPart("price", fixGoodsPrice)
-                .addFormDataPart("description", fixGoodsDespribe)
-                .addFormDataPart("faceUrl","faceImage.jpg", fileBody)
-                .build();
+
+        MultipartBody requestBody = null;
+        if (this.mImgUri == null) {
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("name", fixGoodsName)
+                    .addFormDataPart("price", fixGoodsPrice)
+                    .addFormDataPart("description", fixGoodsDespribe)
+                    .build();
+        } else {
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"),new File(this.mImgUri));
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("name", fixGoodsName)
+                    .addFormDataPart("price", fixGoodsPrice)
+                    .addFormDataPart("description", fixGoodsDespribe)
+                    .addFormDataPart("faceUrl","faceImage.jpg", fileBody)
+                    .build();
+        }
+
 
         Request request = new Request.Builder()
                 .url(url)

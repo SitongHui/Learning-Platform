@@ -89,6 +89,7 @@ public class FixUserInfoActivity extends AppCompatActivity implements View.OnCli
 
         String avatar = getIntent().getStringExtra("avatar");
         Glide.with(this).load(avatar).placeholder(R.drawable.hello).into(myGoodsPic);
+        String gender = getIntent().getStringExtra("gender");
 
         telIcon = findViewById(R.id.et_tel);
         schoolIcon = findViewById(R.id.et_school);
@@ -162,13 +163,25 @@ public class FixUserInfoActivity extends AppCompatActivity implements View.OnCli
         getEditString();
         OkHttpClient okHttpClient = new OkHttpClient();
         String url = "http://" + Constancts.IP + "/lp/v1/user/" + userId;
-        RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"),new File(this.mImgUri));
-        MultipartBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)//上传图片格式一般都是这个格式MediaType.parse("multipart/form-data")
-                .addFormDataPart("phone", tel)
-                .addFormDataPart("department", school)
-                .addFormDataPart("gender", gender)
-                .addFormDataPart("avatar","faceImage.jpg", fileBody).build();
+
+        MultipartBody requestBody = null;
+        if (this.mImgUri == null) {
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)//上传图片格式一般都是这个格式MediaType.parse("multipart/form-data")
+                    .addFormDataPart("phone", tel)
+                    .addFormDataPart("department", school)
+                    .addFormDataPart("gender", gender)
+                    .build();
+        } else {
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/jpeg"),new File(this.mImgUri));
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)//上传图片格式一般都是这个格式MediaType.parse("multipart/form-data")
+                    .addFormDataPart("phone", tel)
+                    .addFormDataPart("department", school)
+                    .addFormDataPart("gender", gender)
+                    .addFormDataPart("avatar","faceImage.jpg", fileBody)
+                    .build();
+        }
 
         Request request = new Request.Builder()
                 .url(url)
