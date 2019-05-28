@@ -61,7 +61,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:background="@drawable/border"
-            android:hint="请输入6-16位新密码"
+            android:hint="请输入6-16位数字、字母组合新密码"
             android:layout_marginTop="20dp"
             android:inputType="textPassword"
             />

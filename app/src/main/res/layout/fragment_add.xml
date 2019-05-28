@@ -40,7 +40,10 @@
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/border"
+        android:lines="1"
+        android:singleLine="true"
         android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:hint="请输入物品名称"/>
 
     <EditText

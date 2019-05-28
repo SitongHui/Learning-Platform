@@ -53,7 +53,7 @@
             android:paddingLeft="5dp"
             android:layout_marginTop="20dp"
             android:inputType="textPassword"
-            android:hint="请输入6-16位密码"
+            android:hint="请输入6-16位数字、字母组合密码"
             android:background="@drawable/border"/>
 
         <EditText

@@ -350,7 +350,8 @@ public class FixUserInfoActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void showImages(Bitmap bitmap) {
-        myGoodsPic.setImageBitmap(bitmap);
+//        myGoodsPic.setImageBitmap(bitmap);
+        Glide.with(this).load(bitmap).placeholder(R.drawable.hello).into(myGoodsPic);
     }
 
     /**
